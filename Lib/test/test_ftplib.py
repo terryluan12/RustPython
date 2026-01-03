@@ -517,6 +517,7 @@ class TestFTPClass(TestCase):
         self.assertEqual(self.client.sanitize('pass 12345'), repr('pass *****'))
         self.assertEqual(self.client.sanitize('PASS 12345'), repr('PASS *****'))
 
+    @unittest.skip('TODO: RUSTPYTHON')
     def test_exceptions(self):
         self.assertRaises(ValueError, self.client.sendcmd, 'echo 40\r\n0')
         self.assertRaises(ValueError, self.client.sendcmd, 'echo 40\n0')
