@@ -2268,7 +2268,6 @@ class PtyTests(unittest.TestCase):
         # Check stdin/stdout error handler is used when invoking PyOS_Readline()
         self.check_input_tty("prompté", b"quux\xe9", "ascii")
 
-    @unittest.expectedFailureIf(sys.platform == "darwin", "TODO: RUSTPYTHON")
     def test_input_no_stdout_fileno(self):
         # Issue #24402: If stdin is the original terminal but stdout.fileno()
         # fails, do not use the original stdout file descriptor
