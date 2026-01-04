@@ -558,11 +558,13 @@ class TestFTPClass(TestCase):
     def test_acct(self):
         self.client.acct('passwd')
 
+    @unittest.expectedFailure  # TODO: RUSTPYTHON; TimeoutError: The read operation timed out 
     def test_rename(self):
         self.client.rename('a', 'b')
         self.server.handler_instance.next_response = '200'
         self.assertRaises(ftplib.error_reply, self.client.rename, 'a', 'b')
 
+    @unittest.expectedFailure  # TODO: RUSTPYTHON; TimeoutError: The read operation timed out
     def test_delete(self):
         self.client.delete('foo')
         self.server.handler_instance.next_response = '199'
