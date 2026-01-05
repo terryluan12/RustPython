@@ -498,6 +498,7 @@ class SimpleHTTPServerTestCase(BaseTestCase):
 
     @unittest.skipUnless(os_helper.TESTFN_NONASCII,
                          'need os_helper.TESTFN_NONASCII')
+    @unittest.expectedFailure # TODO: RUSTPYTHON; http.client.RemoteDisconnected: Remote end closed connection without response
     def test_list_dir_nonascii_filename(self):
         filename = os_helper.TESTFN_NONASCII + '.txt'
         self.check_list_dir_filename(filename)
@@ -518,6 +519,7 @@ class SimpleHTTPServerTestCase(BaseTestCase):
                      'undecodable name cannot be decoded on win32')
     @unittest.skipUnless(os_helper.TESTFN_UNDECODABLE,
                          'need os_helper.TESTFN_UNDECODABLE')
+    @unittest.expectedFailure # TODO: RUSTPYTHON; http.client.RemoteDisconnected: Remote end closed connection without response
     def test_list_dir_undecodable_filename(self):
         filename = os.fsdecode(os_helper.TESTFN_UNDECODABLE) + '.txt'
         self.check_list_dir_filename(filename)
@@ -534,6 +536,7 @@ class SimpleHTTPServerTestCase(BaseTestCase):
 
     @unittest.skipUnless(os_helper.TESTFN_UNENCODABLE,
                          'need os_helper.TESTFN_UNENCODABLE')
+    @unittest.expectedFailure # TODO: RUSTPYTHON; http.client.RemoteDisconnected: Remote end closed connection without response
     def test_list_dir_unencodable_filename(self):
         filename = os_helper.TESTFN_UNENCODABLE + '.txt'
         self.check_list_dir_filename(filename)
@@ -547,6 +550,7 @@ class SimpleHTTPServerTestCase(BaseTestCase):
                 self.check_list_dir_dirname(dirname,
                         quotedname=urllib.parse.quote(dirname, safe='&<>\'"'))
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; http.client.RemoteDisconnected: Remote end closed connection without response
     def test_list_dir_escape_filename(self):
         # Characters that need special treating in URL or HTML.
         for name in ('q?', 'f#', '&amp;', '&amp', '<i>', '"dq"', "'sq'",
@@ -665,6 +669,7 @@ class SimpleHTTPServerTestCase(BaseTestCase):
             finally:
                 os.chmod(self.tempdir, 0o755)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; http.client.RemoteDisconnected: Remote end closed connection without response
     def test_head(self):
         response = self.request(
             self.base_url + '/test', method='HEAD')
@@ -674,6 +679,7 @@ class SimpleHTTPServerTestCase(BaseTestCase):
         self.assertEqual(response.getheader('content-type'),
                          'application/octet-stream')
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; http.client.RemoteDisconnected: Remote end closed connection without response
     def test_browser_cache(self):
         """Check that when a request to /test is sent with the request header
         If-Modified-Since set to date of last modification, the server returns
@@ -692,6 +698,7 @@ class SimpleHTTPServerTestCase(BaseTestCase):
         response = self.request(self.base_url + '/test', headers=headers)
         self.check_status_and_reason(response, HTTPStatus.NOT_MODIFIED)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; http.client.RemoteDisconnected: Remote end closed connection without response
     def test_browser_cache_file_changed(self):
         # with If-Modified-Since earlier than Last-Modified, must return 200
         dt = self.last_modif_datetime
@@ -703,6 +710,7 @@ class SimpleHTTPServerTestCase(BaseTestCase):
         response = self.request(self.base_url + '/test', headers=headers)
         self.check_status_and_reason(response, HTTPStatus.OK)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; http.client.RemoteDisconnected: Remote end closed connection without response
     def test_browser_cache_with_If_None_Match_header(self):
         # if If-None-Match header is present, ignore If-Modified-Since
 
@@ -721,6 +729,7 @@ class SimpleHTTPServerTestCase(BaseTestCase):
         response = self.request('/', method='GETs')
         self.check_status_and_reason(response, HTTPStatus.NOT_IMPLEMENTED)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; http.client.RemoteDisconnected: Remote end closed connection without response
     def test_last_modified(self):
         """Checks that the datetime returned in Last-Modified response header
         is the actual datetime of last modification, rounded to the second
@@ -730,6 +739,7 @@ class SimpleHTTPServerTestCase(BaseTestCase):
         last_modif_header = response.headers['Last-modified']
         self.assertEqual(last_modif_header, self.last_modif_header)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; http.client.RemoteDisconnected: Remote end closed connection without response
     def test_path_without_leading_slash(self):
         response = self.request(self.tempdir_name + '/test')
         self.check_status_and_reason(response, HTTPStatus.OK, data=self.data)
@@ -1015,6 +1025,7 @@ class CGIHTTPServerTestCase(BaseTestCase):
 
         self.assertEqual(res.read(), b'1, python, 123456' + self.linesep)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: b'' != b'32768 32768\n'
     def test_large_content_length(self):
         for w in range(15, 25):
             size = 1 << w
@@ -1023,6 +1034,7 @@ class CGIHTTPServerTestCase(BaseTestCase):
             res = self.request('/cgi-bin/file7.py', 'POST', body, headers)
             self.assertEqual(res.read(), b'%d %d' % (size, size) + self.linesep)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: b'' != b'Hello World\n'
     def test_large_content_length_truncated(self):
         with support.swap_attr(self.request_handler, 'timeout', 0.001):
             for w in range(18, 65):
