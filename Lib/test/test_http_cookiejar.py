@@ -126,7 +126,6 @@ class DateTimeTests(unittest.TestCase):
     def test_http2time_garbage(self, test):
         self.assertIsNone(http2time(test))
 
-    @unittest.skip('TODO: RUSTPYTHON; regressed to cubic complexity')
     def test_http2time_redos_regression_actually_completes(self):
         # LOOSE_HTTP_DATE_RE was vulnerable to malicious input which caused catastrophic backtracking (REDoS).
         # If we regress to cubic complexity, this test will take a very long time to succeed.
