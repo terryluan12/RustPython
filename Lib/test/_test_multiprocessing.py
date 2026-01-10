@@ -6715,6 +6715,33 @@ class ThreadsMixin(BaseMixin):
 # Functions used to create test cases from the base ones in this module
 #
 
+
+def get_temp_class(test_name, module, base, Mixin, type_):
+    # RUSTPYTHON specific function to define the Temp class
+
+    # test_rapid_restart fails on:
+    #     - 'test_multiprocessing_fork' in 'WithManagerTestManagerRestart' test, on windows and mac
+    #     - 'test_multiprocessing_forkserver' in 'WithManagerTestManagerRestart' test on windows
+    #     - `test_multiprocessing_spawn` in 'WithManagerTestManagerRestart' test on windows
+    if (
+        test_name == 'WithManagerTestManagerRestart' and
+        (
+            sys.platform == "win32" or
+            (sys.platform == "darwin" and 'test_multiprocessing_fork' in module)
+        )
+    ):
+        class Temp(base, Mixin, unittest.TestCase):
+            @unittest.expectedFailure #TODO: RUSTPYTHON
+            def test_rapid_restart(self):
+                super().test_rapid_restart()
+            
+    else:
+        class Temp(base, Mixin, unittest.TestCase):
+            pass
+    if type_ == 'manager':
+        Temp = hashlib_helper.requires_hashdigest('sha256')(Temp)
+    return Temp
+
 def install_tests_in_module_dict(remote_globs, start_method,
                                  only_type=None, exclude_types=False):
     __module__ = remote_globs['__name__']
@@ -6737,7 +6764,11 @@ def install_tests_in_module_dict(remote_globs, start_method,
                     continue
                 newname = 'With' + type_.capitalize() + name[1:]
                 Mixin = local_globs[type_.capitalize() + 'Mixin']
-                if newname == "WithManagerTestManagerRestart":
+                if (newname == 'WithManagerTestManagerRestart' and
+                    (
+                        sys.platform == "win32" or
+                        (sys.platform == "darwin" and '.test_multiprocessing_fork.' in __module__)
+                    )):
                     class Temp(base, Mixin, unittest.TestCase):
                         @unittest.expectedFailure #TODO: RUSTPYTHON
                         def test_rapid_restart(self):
