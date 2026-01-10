@@ -3305,7 +3305,6 @@ class _TestManagerRestart(BaseTestCase):
         queue = manager.get_queue()
         queue.put('hello world')
 
-    @unittest.skip("TODO: RUSTPYTHON; WithProcessesTestManagerRestart + WithThreadsTestManagerRestart succeeds, but WithManagerTestManagerRestart fails")
     def test_rapid_restart(self):
         authkey = os.urandom(32)
         manager = QueueManager(
@@ -6738,8 +6737,15 @@ def install_tests_in_module_dict(remote_globs, start_method,
                     continue
                 newname = 'With' + type_.capitalize() + name[1:]
                 Mixin = local_globs[type_.capitalize() + 'Mixin']
-                class Temp(base, Mixin, unittest.TestCase):
-                    pass
+                if newname == "WithManagerTestManagerRestart":
+                    class Temp(base, Mixin, unittest.TestCase):
+                        @unittest.expectedFailure #TODO: RUSTPYTHON
+                        def test_rapid_restart(self):
+                            super().test_rapid_restart()
+                        
+                else:
+                    class Temp(base, Mixin, unittest.TestCase):
+                        pass
                 if type_ == 'manager':
                     Temp = hashlib_helper.requires_hashdigest('sha256')(Temp)
                 Temp.__name__ = Temp.__qualname__ = newname
