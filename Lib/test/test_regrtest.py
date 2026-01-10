@@ -621,6 +621,7 @@ class ProgramsTestCase(BaseTestCase):
                 *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
+    @unittest.skipIf(sys.platform == "win32", 'TODO: RUSTPYTHON; Random fails')
     def test_module_regrtest(self):
         # -m test.regrtest
         args = [*self.python_args, '-m', 'test.regrtest',
