@@ -84,6 +84,20 @@ pub fn find_exception_handler(table: &[u8], offset: u32) -> Option<ExceptionTabl
     None
 }
 
+/// Encode LOAD_ATTR oparg: bit 0 = method flag, bits 1+ = name index.
+#[inline]
+pub const fn encode_load_attr_arg(name_idx: u32, is_method: bool) -> u32 {
+    (name_idx << 1) | (is_method as u32)
+}
+
+/// Decode LOAD_ATTR oparg: returns (name_idx, is_method).
+#[inline]
+pub const fn decode_load_attr_arg(oparg: u32) -> (u32, bool) {
+    let is_method = (oparg & 1) == 1;
+    let name_idx = oparg >> 1;
+    (name_idx, is_method)
+}
+
 /// Oparg values for [`Instruction::ConvertValue`].
 ///
 /// ## See also
@@ -357,26 +371,13 @@ pub struct CodeObject<C: Constant = ConstantData> {
 bitflags! {
     #[derive(Copy, Clone, Debug, PartialEq)]
     pub struct CodeFlags: u16 {
-        const NEW_LOCALS = 0x01;
-        const IS_GENERATOR = 0x02;
-        const IS_COROUTINE = 0x04;
-        const HAS_VARARGS = 0x08;
-        const HAS_VARKEYWORDS = 0x10;
-        const IS_OPTIMIZED = 0x20;
+        const OPTIMIZED = 0x0001;
+        const NEWLOCALS = 0x0002;
+        const VARARGS = 0x0004;
+        const VARKEYWORDS = 0x0008;
+        const GENERATOR = 0x0020;
+        const COROUTINE = 0x0080;
     }
-}
-
-impl CodeFlags {
-    pub const NAME_MAPPING: &'static [(&'static str, Self)] = &[
-        ("GENERATOR", Self::IS_GENERATOR),
-        ("COROUTINE", Self::IS_COROUTINE),
-        (
-            "ASYNC_GENERATOR",
-            Self::from_bits_truncate(Self::IS_GENERATOR.bits() | Self::IS_COROUTINE.bits()),
-        ),
-        ("VARARGS", Self::HAS_VARARGS),
-        ("VARKEYWORDS", Self::HAS_VARKEYWORDS),
-    ];
 }
 
 /// an opcode argument that may be extended by a prior ExtendedArg
@@ -828,7 +829,7 @@ pub enum Instruction {
     LoadFastLoadFast {
         arg: Arg<u32>,
     } = 88, // Placeholder
-    LoadFromDictOrDeref(Arg<NameIdx>) = 89, // Placeholder
+    LoadFromDictOrDeref(Arg<NameIdx>) = 89,
     LoadFromDictOrGlobals(Arg<NameIdx>) = 90, // Placeholder
     LoadGlobal(Arg<NameIdx>) = 91,
     LoadName(Arg<NameIdx>) = 92,
@@ -931,10 +932,6 @@ pub enum Instruction {
         target: Arg<Label>,
     } = 130,
     JumpIfNotExcMatch(Arg<Label>) = 131,
-    LoadClassDeref(Arg<NameIdx>) = 132,
-    Reverse {
-        amount: Arg<u32>,
-    } = 133,
     SetExcInfo = 134,
     Subscript = 135,
     // ===== Pseudo Opcodes (252+) ======
@@ -999,10 +996,6 @@ impl TryFrom<u8> for Instruction {
                 target: Arg::marker(),
             }),
             u8::from(Self::JumpIfNotExcMatch(Arg::marker())),
-            u8::from(Self::LoadClassDeref(Arg::marker())),
-            u8::from(Self::Reverse {
-                amount: Arg::marker(),
-            }),
             u8::from(Self::SetExcInfo),
             u8::from(Self::Subscript),
         ];
@@ -1556,14 +1549,14 @@ impl<C: Constant> CodeObject<C> {
         let args = &self.varnames[..nargs];
         let kwonlyargs = &self.varnames[nargs..varargs_pos];
 
-        let vararg = if self.flags.contains(CodeFlags::HAS_VARARGS) {
+        let vararg = if self.flags.contains(CodeFlags::VARARGS) {
             let vararg = &self.varnames[varargs_pos];
             varargs_pos += 1;
             Some(vararg)
         } else {
             None
         };
-        let varkwarg = if self.flags.contains(CodeFlags::HAS_VARKEYWORDS) {
+        let varkwarg = if self.flags.contains(CodeFlags::VARKEYWORDS) {
             Some(&self.varnames[varargs_pos])
         } else {
             None
@@ -1740,6 +1733,9 @@ impl Instruction {
     pub const fn label_arg(&self) -> Option<Arg<Label>> {
         match self {
             Jump { target: l }
+            | JumpBackward { target: l }
+            | JumpBackwardNoInterrupt { target: l }
+            | JumpForward { target: l }
             | JumpIfNotExcMatch(l)
             | PopJumpIfTrue { target: l }
             | PopJumpIfFalse { target: l }
@@ -1766,6 +1762,9 @@ impl Instruction {
         matches!(
             self,
             Jump { .. }
+                | JumpForward { .. }
+                | JumpBackward { .. }
+                | JumpBackwardNoInterrupt { .. }
                 | Continue { .. }
                 | Break { .. }
                 | ReturnValue
@@ -1791,14 +1790,14 @@ impl Instruction {
             Nop => 0,
             ImportName { .. } => -1,
             ImportFrom { .. } => 1,
-            LoadFast(_) | LoadFastAndClear(_) | LoadName(_) | LoadGlobal(_) | LoadDeref(_)
-            | LoadClassDeref(_) => 1,
+            LoadFast(_) | LoadFastAndClear(_) | LoadName(_) | LoadGlobal(_) | LoadDeref(_) => 1,
             StoreFast(_) | StoreName(_) | StoreGlobal(_) | StoreDeref(_) => -1,
             StoreFastLoadFast { .. } => 0, // pop 1, push 1
             DeleteFast(_) | DeleteName(_) | DeleteGlobal(_) | DeleteDeref(_) => 0,
             LoadClosure(_) => 1,
             Subscript => -1,
             StoreSubscr => -3,
+            LoadFromDictOrDeref(_) => 1,
             DeleteSubscr => -2,
             LoadAttr { .. } => 0,
             // LoadAttrMethod: pop obj, push method + self_or_null
@@ -1922,7 +1921,6 @@ impl Instruction {
                 -1 + before as i32 + 1 + after as i32
             }
             PopExcept => 0,
-            Reverse { .. } => 0,
             GetAwaitable => 0,
             BeforeAsyncWith => 1,
             GetAIter => 0,
@@ -1937,7 +1935,33 @@ impl Instruction {
             UnaryNot => 0,
             GetYieldFromIter => 0,
             PushNull => 1, // Push NULL for call protocol
-            _ => 0,
+            Cache => 0,
+            BinarySlice => 0,
+            BinaryOpInplaceAddUnicode => 0,
+            EndFor => 0,
+            ExitInitCheck => 0,
+            InterpreterExit => 0,
+            LoadAssertionError => 0,
+            LoadLocals => 0,
+            ReturnGenerator => 0,
+            StoreSlice => 0,
+            DictMerge { .. } => 0,
+            BuildConstKeyMap { .. } => 0,
+            CopyFreeVars { .. } => 0,
+            EnterExecutor => 0,
+            JumpBackwardNoInterrupt { .. } => 0,
+            JumpBackward { .. } => 0,
+            JumpForward { .. } => 0,
+            ListExtend { .. } => 0,
+            LoadFastCheck(_) => 0,
+            LoadFastLoadFast { .. } => 0,
+            LoadFromDictOrGlobals(_) => 0,
+            SetUpdate { .. } => 0,
+            MakeCell(_) => 0,
+            LoadSuperAttr { .. } => 0,
+            StoreFastStoreFast { .. } => 0,
+            PopJumpIfNone { .. } => 0,
+            PopJumpIfNotNone { .. } => 0,
         }
     }
 
@@ -2060,14 +2084,30 @@ impl Instruction {
             ImportName { idx } => w!(IMPORT_NAME, name = idx),
             IsOp(inv) => w!(IS_OP, ?inv),
             Jump { target } => w!(JUMP, target),
+            JumpBackward { target } => w!(JUMP_BACKWARD, target),
+            JumpBackwardNoInterrupt { target } => w!(JUMP_BACKWARD_NO_INTERRUPT, target),
+            JumpForward { target } => w!(JUMP_FORWARD, target),
             JumpIfFalseOrPop { target } => w!(JUMP_IF_FALSE_OR_POP, target),
             JumpIfNotExcMatch(target) => w!(JUMP_IF_NOT_EXC_MATCH, target),
             JumpIfTrueOrPop { target } => w!(JUMP_IF_TRUE_OR_POP, target),
             ListAppend { i } => w!(LIST_APPEND, i),
-            LoadAttr { idx } => w!(LOAD_ATTR, name = idx),
+            LoadAttr { idx } => {
+                let encoded = idx.get(arg);
+                let (name_idx, is_method) = decode_load_attr_arg(encoded);
+                let attr_name = name(name_idx);
+                if is_method {
+                    write!(
+                        f,
+                        "{:pad$}({}, {}, method=true)",
+                        "LOAD_ATTR", encoded, attr_name
+                    )
+                } else {
+                    write!(f, "{:pad$}({}, {})", "LOAD_ATTR", encoded, attr_name)
+                }
+            }
             LoadAttrMethod { idx } => w!(LOAD_ATTR_METHOD, name = idx),
             LoadBuildClass => w!(LOAD_BUILD_CLASS),
-            LoadClassDeref(idx) => w!(LOAD_CLASSDEREF, cell_name = idx),
+            LoadFromDictOrDeref(i) => w!(LOAD_FROM_DICT_OR_DEREF, cell_name = i),
             LoadClosure(i) => w!(LOAD_CLOSURE, cell_name = i),
             LoadConst { idx } => fmt_const("LOAD_CONST", arg, f, idx),
             LoadDeref(idx) => w!(LOAD_DEREF, cell_name = idx),
@@ -2094,7 +2134,6 @@ impl Instruction {
             Resume { arg } => w!(RESUME, arg),
             ReturnConst { idx } => fmt_const("RETURN_CONST", arg, f, idx),
             ReturnValue => w!(RETURN_VALUE),
-            Reverse { amount } => w!(REVERSE, amount),
             Send { target } => w!(SEND, target),
             SetAdd { i } => w!(SET_ADD, i),
             SetExcInfo => w!(SET_EXC_INFO),

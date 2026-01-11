@@ -186,7 +186,7 @@ impl Frame {
                 Ok(())
             };
             map_to_dict(&code.cellvars, &self.cells_frees)?;
-            if code.flags.contains(bytecode::CodeFlags::IS_OPTIMIZED) {
+            if code.flags.contains(bytecode::CodeFlags::OPTIMIZED) {
                 map_to_dict(&code.freevars, &self.cells_frees[code.cellvars.len()..])?;
             }
         }
@@ -1000,11 +1000,7 @@ impl ExecutingFrame<'_> {
                 let iterable = self.pop_value();
                 let iter = if iterable.class().is(vm.ctx.types.coroutine_type) {
                     // Coroutine requires CO_COROUTINE or CO_ITERABLE_COROUTINE flag
-                    if !self
-                        .code
-                        .flags
-                        .intersects(bytecode::CodeFlags::IS_COROUTINE)
-                    {
+                    if !self.code.flags.intersects(bytecode::CodeFlags::COROUTINE) {
                         return Err(vm.new_type_error(
                             "cannot 'yield from' a coroutine object in a non-coroutine generator"
                                 .to_owned(),
@@ -1082,6 +1078,18 @@ impl ExecutingFrame<'_> {
                 self.jump(target.get(arg));
                 Ok(None)
             }
+            bytecode::Instruction::JumpForward { target } => {
+                self.jump(target.get(arg));
+                Ok(None)
+            }
+            bytecode::Instruction::JumpBackward { target } => {
+                self.jump(target.get(arg));
+                Ok(None)
+            }
+            bytecode::Instruction::JumpBackwardNoInterrupt { target } => {
+                self.jump(target.get(arg));
+                Ok(None)
+            }
             bytecode::Instruction::ListAppend { i } => {
                 let item = self.pop_value();
                 let obj = self.nth_value(i.get(arg));
@@ -1093,11 +1101,14 @@ impl ExecutingFrame<'_> {
                 Ok(None)
             }
             bytecode::Instruction::LoadAttr { idx } => self.load_attr(vm, idx.get(arg)),
+            bytecode::Instruction::LoadAttrMethod { .. } => {
+                unreachable!("LoadAttrMethod is converted to LoadAttr during compilation")
+            }
             bytecode::Instruction::LoadBuildClass => {
                 self.push_value(vm.builtins.get_attr(identifier!(vm, __build_class__), vm)?);
                 Ok(None)
             }
-            bytecode::Instruction::LoadClassDeref(i) => {
+            bytecode::Instruction::LoadFromDictOrDeref(i) => {
                 let i = i.get(arg) as usize;
                 let name = if i < self.code.cellvars.len() {
                     self.code.cellvars[i]
@@ -1163,9 +1174,6 @@ impl ExecutingFrame<'_> {
                 let x = self.load_global_or_builtin(name, vm)?;
                 self.push_value(x);
                 Ok(None)
-            }
-            bytecode::Instruction::LoadAttrMethod { idx } => {
-                self.load_attr_method(vm, idx.get(arg))
             }
             bytecode::Instruction::LoadName(idx) => {
                 let name = self.code.names[idx.get(arg) as usize];
@@ -1401,8 +1409,9 @@ impl ExecutingFrame<'_> {
                 Ok(None)
             }
             bytecode::Instruction::Nop => Ok(None),
-            // PopBlock is now a pseudo-instruction - exception table handles this
-            bytecode::Instruction::PopBlock => Ok(None),
+            bytecode::Instruction::PopBlock => {
+                unreachable!("PopBlock is converted to Nop during compilation")
+            }
             bytecode::Instruction::PopExcept => {
                 // Pop prev_exc from value stack and restore it
                 let prev_exc = self.pop_value();
@@ -1457,11 +1466,6 @@ impl ExecutingFrame<'_> {
             bytecode::Instruction::ReturnValue => {
                 let value = self.pop_value();
                 self.unwind_blocks(vm, UnwindReason::Returning { value })
-            }
-            bytecode::Instruction::Reverse { amount } => {
-                let stack_len = self.state.stack.len();
-                self.state.stack[stack_len - amount.get(arg) as usize..stack_len].reverse();
-                Ok(None)
             }
             bytecode::Instruction::SetAdd { i } => {
                 let item = self.pop_value();
@@ -1667,7 +1671,7 @@ impl ExecutingFrame<'_> {
                 // arg=0: direct yield (wrapped for async generators)
                 // arg=1: yield from await/yield-from (NOT wrapped)
                 let wrap = oparg.get(arg) == 0;
-                let value = if wrap && self.code.flags.contains(bytecode::CodeFlags::IS_COROUTINE) {
+                let value = if wrap && self.code.flags.contains(bytecode::CodeFlags::COROUTINE) {
                     PyAsyncGenWrappedValue(value).into_pyobject(vm)
                 } else {
                     value
@@ -2493,31 +2497,28 @@ impl ExecutingFrame<'_> {
         Ok(None)
     }
 
-    fn load_attr(&mut self, vm: &VirtualMachine, idx: u32) -> FrameResult {
-        // Regular attribute access: pop obj, push attr
-        let attr_name = self.code.names[idx as usize];
-        let parent = self.pop_value();
-        let obj = parent.get_attr(attr_name, vm)?;
-        self.push_value(obj);
-        Ok(None)
-    }
-
-    fn load_attr_method(&mut self, vm: &VirtualMachine, idx: u32) -> FrameResult {
-        // Method call: pop obj, push [method, self_or_null]
-        let attr_name = self.code.names[idx as usize];
+    fn load_attr(&mut self, vm: &VirtualMachine, oparg: u32) -> FrameResult {
+        let (name_idx, is_method) = bytecode::decode_load_attr_arg(oparg);
+        let attr_name = self.code.names[name_idx as usize];
         let parent = self.pop_value();
 
-        match PyMethod::get(parent, attr_name, vm)? {
-            PyMethod::Function { target, func } => {
-                // Method descriptor found: push [method, self]
-                self.push_value(func);
-                self.push_value(target);
+        if is_method {
+            // Method call: push [method, self_or_null]
+            let method = PyMethod::get(parent.clone(), attr_name, vm)?;
+            match method {
+                PyMethod::Function { target: _, func } => {
+                    self.push_value(func);
+                    self.push_value(parent);
+                }
+                PyMethod::Attribute(val) => {
+                    self.push_value(val);
+                    self.push_null();
+                }
             }
-            PyMethod::Attribute(val) => {
-                // Regular attribute: push [attr, NULL]
-                self.push_value(val);
-                self.push_null();
-            }
+        } else {
+            // Regular attribute access
+            let obj = parent.get_attr(attr_name, vm)?;
+            self.push_value(obj);
         }
         Ok(None)
     }

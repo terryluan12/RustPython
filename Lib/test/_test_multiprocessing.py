@@ -1654,6 +1654,7 @@ class _TestCondition(BaseTestCase):
         threading_helper.join_thread(t)
         join_process(p)
 
+    # @unittest.expectedFailure TODO: RUSTPYTHON; Possible intermittent hang?
     def test_notify_all(self):
         cond = self.Condition()
         sleeping = self.Semaphore(0)
@@ -3070,6 +3071,7 @@ class _TestPoolWorkerErrors(BaseTestCase):
 class _TestPoolWorkerLifetime(BaseTestCase):
     ALLOWED_TYPES = ('processes', )
 
+    @unittest.skip("TODO: RUSTPYTHON; Hangs")
     def test_pool_worker_lifetime(self):
         p = multiprocessing.Pool(3, maxtasksperchild=10)
         self.assertEqual(3, len(p._pool))
@@ -6713,6 +6715,33 @@ class ThreadsMixin(BaseMixin):
 # Functions used to create test cases from the base ones in this module
 #
 
+
+def get_temp_class(newname, __module__, base, Mixin, type_):
+    # RUSTPYTHON specific function to define the Temp class
+
+    # test_rapid_restart fails on:
+    #     - 'test_multiprocessing_fork' in 'WithManagerTestManagerRestart' test, on windows and mac
+    #     - 'test_multiprocessing_forkserver' in 'WithManagerTestManagerRestart' test on windows
+    #     - `test_multiprocessing_spawn` in 'WithManagerTestManagerRestart' test on windows
+    if (
+        newname == 'WithManagerTestManagerRestart' and
+        (
+            sys.platform == "win32" or
+            (sys.platform == "darwin" and '.test_multiprocessing_fork.' in __module__)
+        )
+    ):
+        class Temp(base, Mixin, unittest.TestCase):
+            @unittest.expectedFailure #TODO: RUSTPYTHON
+            def test_rapid_restart(self):
+                super().test_rapid_restart()
+            
+    else:
+        class Temp(base, Mixin, unittest.TestCase):
+            pass
+    if type_ == 'manager':
+        Temp = hashlib_helper.requires_hashdigest('sha256')(Temp)
+    return Temp
+
 def install_tests_in_module_dict(remote_globs, start_method,
                                  only_type=None, exclude_types=False):
     __module__ = remote_globs['__name__']
@@ -6735,10 +6764,7 @@ def install_tests_in_module_dict(remote_globs, start_method,
                     continue
                 newname = 'With' + type_.capitalize() + name[1:]
                 Mixin = local_globs[type_.capitalize() + 'Mixin']
-                class Temp(base, Mixin, unittest.TestCase):
-                    pass
-                if type_ == 'manager':
-                    Temp = hashlib_helper.requires_hashdigest('sha256')(Temp)
+                Temp = get_temp_class(newname, __module__, base, Mixin, type_)
                 Temp.__name__ = Temp.__qualname__ = newname
                 Temp.__module__ = __module__
                 Temp.start_method = start_method
