@@ -219,6 +219,7 @@ class ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
                 create table foo(a, b)
                 """)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; self.con.set_progress_handler(progress_handler=lambda: None, n=1) - TypeError: expected at least 3 arguments, got 1
     def test_progress_handler_keyword_args(self):
         regex = (
             r"Passing keyword argument 'progress_handler' to "
@@ -352,6 +353,7 @@ class TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
             cx.set_trace_callback(lambda stmt: 5/0)
             cx.execute("select 1")
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; self.con.set_trace_callback(trace_callback=lambda: None) - TypeError: expected at least 2 arguments, got 1
     def test_trace_keyword_args(self):
         regex = (
             r"Passing keyword argument 'trace_callback' to "

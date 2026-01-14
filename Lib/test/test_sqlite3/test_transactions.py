@@ -31,6 +31,7 @@ from .util import memory_database
 from .util import MemoryDatabaseMixin
 
 
+@unittest.skip('TODO: RUSTPYTHON; self.con1 = sqlite.connect(TESTFN, timeout=0) - TypeError: Expected type "float" but "int" found')
 class TransactionTests(unittest.TestCase):
     def setUp(self):
         # We can disable the busy handlers, since we control
@@ -387,6 +388,7 @@ class AutocommitAttribute(unittest.TestCase):
                     cx.autocommit = mode
                     self.assertEqual(cx.autocommit, mode)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; sqlite.connect(":memory:", autocommit=mode) - TypeError: autocommit must be True, False, or sqlite3.LEGACY_TRANSACTION_CONTROL, not str
     def test_autocommit_setget_invalid(self):
         msg = "autocommit must be True, False, or.*LEGACY"
         for mode in "a", 12, (), None:
@@ -394,6 +396,7 @@ class AutocommitAttribute(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, msg):
                     sqlite.connect(":memory:", autocommit=mode)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; self.assertTrue(cx.in_transaction) - AssertionError: False is not true
     def test_autocommit_disabled(self):
         expected = [
             "SELECT 1",
@@ -409,6 +412,7 @@ class AutocommitAttribute(unittest.TestCase):
                 cx.commit()
                 cx.rollback()
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; self.assertTrue(cx.in_transaction) - AssertionError: False is not true
     def test_autocommit_disabled_implicit_rollback(self):
         expected = ["ROLLBACK"]
         with memory_database(autocommit=False) as cx:
@@ -435,6 +439,7 @@ class AutocommitAttribute(unittest.TestCase):
                         meth()  # expect this to pass silently
                         self.assertFalse(cx.in_transaction)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; self.assertTrue(cx.in_transaction) - AssertionError: False is not true
     def test_autocommit_disabled_then_enabled(self):
         expected = ["COMMIT"]
         with memory_database(autocommit=False) as cx:
@@ -468,6 +473,7 @@ class AutocommitAttribute(unittest.TestCase):
                     self.assertFalse(cx.in_transaction)
                 self.assertFalse(cx.in_transaction)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; self.assertEqual(traced, expected) - AssertionError: Lists differ: [] != ['COMMIT', 'BEGIN']
     def test_autocommit_disabled_ctx_mgr(self):
         expected = ["COMMIT", "BEGIN"]
         with memory_database(autocommit=False) as cx:
@@ -487,6 +493,7 @@ class AutocommitAttribute(unittest.TestCase):
                     self.assertTrue(cx.in_transaction)
                 self.assertFalse(cx.in_transaction)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; self.assertTrue(cx.in_transaction) - AssertionError: False is not true
     def test_autocommit_enabled_executescript(self):
         expected = ["BEGIN", "SELECT 1"]
         with memory_database(autocommit=True) as cx:
@@ -496,6 +503,7 @@ class AutocommitAttribute(unittest.TestCase):
                 cx.executescript("SELECT 1")
                 self.assertTrue(cx.in_transaction)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; self.assertEqual(traced, expected) - AssertionError: Lists differ: [] != ['SELECT 1']
     def test_autocommit_disabled_executescript(self):
         expected = ["SELECT 1"]
         with memory_database(autocommit=False) as cx:

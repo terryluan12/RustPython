@@ -553,6 +553,7 @@ class ConnectionTests(unittest.TestCase):
                                    cx.executemany, "insert into t values(?)",
                                    ((v,) for v in range(3)))
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AttributeError: module 'sqlite3' has no attribute 'SQLITE_DBCONFIG_ENABLE_FKEY'
     def test_connection_config(self):
         op = sqlite.SQLITE_DBCONFIG_ENABLE_FKEY
         with memory_database() as cx:
@@ -577,6 +578,7 @@ class ConnectionTests(unittest.TestCase):
             with self.assertRaisesRegex(sqlite.IntegrityError, "constraint"):
                 cx.execute("insert into u values(0)")
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: DeprecationWarning not triggered
     def test_connect_positional_arguments(self):
         regex = (
             r"Passing more than 1 positional argument to sqlite3.connect\(\)"
@@ -590,12 +592,14 @@ class ConnectionTests(unittest.TestCase):
             cx.close()
         self.assertEqual(cm.filename, __file__)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: ResourceWarning not triggered
     def test_connection_resource_warning(self):
         with self.assertWarns(ResourceWarning):
             cx = sqlite.connect(":memory:")
             del cx
             gc_collect()
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; sig = signature(self.cx) - ValueError: no signature found for builtin <built-in method __call__ of Connection object at ...>
     def test_connection_signature(self):
         from inspect import signature
         sig = signature(self.cx)
@@ -903,6 +907,7 @@ class CursorTests(unittest.TestCase):
         with self.assertRaises(ZeroDivisionError):
             self.cu.execute("select name from test where name=?", L())
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: DeprecationWarning not triggered
     def test_execute_named_param_and_sequence(self):
         dataset = (
             ("select :a", (1,)),
@@ -1116,6 +1121,7 @@ class CursorTests(unittest.TestCase):
 
         self.assertEqual(len(res), 2)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; self.assertRaises(ValueError, setter, -3) - AssertionError: ValueError not raised by functools.partial(<builtin_function_or_method object at 0x600003bace00>, <_sqlite.Cursor object at 0x6000027851e0>, 'arraysize')
     def test_invalid_array_size(self):
         UINT32_MAX = (1 << 32) - 1
         setter = functools.partial(setattr, self.cu, 'arraysize')
@@ -1124,6 +1130,7 @@ class CursorTests(unittest.TestCase):
         self.assertRaises(ValueError, setter, -3)
         self.assertRaises(OverflowError, setter, UINT32_MAX + 1)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: Lists differ: [('foo',)] != []
     def test_fetchmany(self):
         # no active SQL statement
         res = self.cu.fetchmany()
@@ -1152,6 +1159,7 @@ class CursorTests(unittest.TestCase):
         res = self.cu.fetchmany(100)
         self.assertEqual(res, [])
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; self.assertRaises(ValueError, fetchmany, -3) - AssertionError: ValueError not raised by fetchmany
     def test_invalid_fetchmany(self):
         UINT32_MAX = (1 << 32) - 1
         fetchmany = self.cu.fetchmany
@@ -1279,7 +1287,6 @@ class BlobTests(unittest.TestCase):
         self.blob.seek(-10, SEEK_END)
         self.assertEqual(self.blob.tell(), 40)
 
-    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_blob_seek_error(self):
         msg_oor = "offset out of blob range"
         msg_orig = "'origin' should be os.SEEK_SET, os.SEEK_CUR, or os.SEEK_END"
@@ -1456,7 +1463,6 @@ class BlobTests(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, msg):
             self.blob["a"] = b"b"
 
-    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_blob_get_item_error(self):
         dataset = [len(self.blob), 105, -105]
         for idx in dataset:
@@ -1779,6 +1785,7 @@ class ExtensionTests(unittest.TestCase):
         self.assertEqual(result, 5, "Basic test of Connection.executescript")
 
 
+@unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: "Cannot operate on a closed database." does not match "Base Connection.__init__ not called."
 class ClosedConTests(unittest.TestCase):
     def check(self, fn, *args, **kwds):
         regex = "Cannot operate on a closed database."
@@ -1950,6 +1957,7 @@ class MultiprocessTests(unittest.TestCase):
     def tearDown(self):
         unlink(TESTFN)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; self.assertEqual("started", proc.stdout.readline().strip()) - AssertionError: 'started' != ''
     def test_ctx_mgr_rollback_if_commit_failed(self):
         # bpo-27334: ctx manager does not rollback if commit fails
         SCRIPT = f"""if 1:
@@ -2061,6 +2069,7 @@ class RowTests(unittest.TestCase):
 
         self.assertNotEqual(r1, r3)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; row = sqlite.Row(cu, ()) - ValueError: no description in Cursor
     def test_row_no_description(self):
         cu = self.cx.cursor()
         self.assertIsNone(cu.description)

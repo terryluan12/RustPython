@@ -1,7 +1,5 @@
-import os
 import pathlib
 import py_compile
-import shutil
 import textwrap
 import unittest
 import warnings
@@ -49,11 +47,8 @@ class FilesTests:
             resources.files(package=self.data)
 
 
-class OpenDiskTests(FilesTests, unittest.TestCase):
-
-    @unittest.expectedFailureIfWindows('TODO: RUSTPYTHON')
-    def test_read_bytes(self):
-        super().test_read_bytes()
+class OpenDiskTests(FilesTests, util.DiskSetup, unittest.TestCase):
+    pass
 
 
 class OpenZipTests(FilesTests, util.ZipSetup, unittest.TestCase):
@@ -62,10 +57,6 @@ class OpenZipTests(FilesTests, util.ZipSetup, unittest.TestCase):
 
 class OpenNamespaceTests(FilesTests, util.DiskSetup, unittest.TestCase):
     MODULE = 'namespacedata01'
-
-    @unittest.expectedFailureIfWindows('TODO: RUSTPYTHON')
-    def test_read_bytes(self):
-        super().test_read_bytes()
 
     def test_non_paths_in_dunder_path(self):
         """

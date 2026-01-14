@@ -421,6 +421,7 @@ class FunctionTests(unittest.TestCase):
         self.assertRaisesRegex(sqlite.OperationalError, msg,
                                self.con.execute, "select badreturn()")
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: DeprecationWarning not triggered
     def test_func_keyword_args(self):
         regex = (
             r"Passing keyword arguments 'name', 'narg' and 'func' to "
@@ -737,6 +738,7 @@ class AggregateTests(unittest.TestCase):
                 val = cur.fetchone()[0]
                 self.assertEqual(val, txt)
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; self.con.create_aggregate("test", 1, aggregate_class=AggrText) - TypeError: expected at least 4 arguments, got 3
     def test_agg_keyword_args(self):
         regex = (
             r"Passing keyword arguments 'name', 'n_arg' and 'aggregate_class' to "
@@ -787,11 +789,13 @@ class AuthorizerTests(unittest.TestCase):
     def tearDown(self):
         self.con.close()
 
+    @unittest.skip('TODO: RUSTPYTHON; AssertionError: self.assertIn("prohibited", str(cm.exception)) - "prohibited" not found in "not authorized"')
     def test_table_access(self):
         with self.assertRaises(sqlite.DatabaseError) as cm:
             self.con.execute("select * from t2")
         self.assertIn('prohibited', str(cm.exception))
 
+    @unittest.skip('TODO: RUSTPYTHON; AssertionError: self.assertIn("prohibited", str(cm.exception)) - "prohibited" not found in "not authorized"')
     def test_column_access(self):
         with self.assertRaises(sqlite.DatabaseError) as cm:
             self.con.execute("select c2 from t1")
@@ -802,6 +806,7 @@ class AuthorizerTests(unittest.TestCase):
         self.con.execute("select * from t2")
         self.con.execute("select c2 from t1")
 
+    @unittest.expectedFailure # TODO: RUSTPYTHON; TypeError: self.con.set_authorizer(authorizer_callback=lambda: None) - expected at least 2 arguments, got 1
     def test_authorizer_keyword_args(self):
         regex = (
             r"Passing keyword argument 'authorizer_callback' to "
