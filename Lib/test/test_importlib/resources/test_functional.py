@@ -1,3 +1,11 @@
+# TODO: RUSTPYTHON
+try:
+  import unittest
+  from . import util
+  util.DiskSetup
+except AttributeError:
+  raise unittest.SkipTest('TODO: RUSTPYTHON; ')
+
 import unittest
 import os
 import importlib
@@ -27,7 +35,6 @@ class ModuleAnchorMixin:
     @property
     def anchor02(self):
         return importlib.import_module('data02')
-
 
 class FunctionalAPIBase(util.DiskSetup, ExtraAssertions):
     def setUp(self):

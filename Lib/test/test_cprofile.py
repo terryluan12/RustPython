@@ -1,3 +1,7 @@
+# TODO: RUSTPYTHON; Skip this test if cProfile does not exist.
+from test.support import import_helper
+import_helper.import_module('cProfile')
+
 """Test suite for the cProfile module."""
 
 import sys

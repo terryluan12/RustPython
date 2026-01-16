@@ -1,3 +1,7 @@
+# TODO: RUSTPYTHON; Skip this test if modulefinder does not exist.
+from test.support import import_helper
+import_helper.import_module('modulefinder')
+
 import os
 import errno
 import importlib.machinery

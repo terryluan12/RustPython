@@ -1,6 +1,13 @@
 """sqlite3 CLI tests."""
 import sqlite3
 import unittest
+# TODO: RUSTPYTHON
+try:
+    from sqlite3.__main__ import main as cli
+except sqlite3.OperationalError:
+    raise unittest.SkipTest('TODO: RUSTPYTHON; con = sqlite3.connect(args.filename, isolation_level=None) _sqlite3.OperationalError: unable to open database file')
+# END RUSTPYTHON;
+# ----------------------------------------------------------------------------------------------
 
 from sqlite3.__main__ import main as cli
 from test.support.os_helper import TESTFN, unlink

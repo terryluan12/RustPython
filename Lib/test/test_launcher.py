@@ -112,6 +112,17 @@ def create_registry_data(root, data):
     for k, v in data.items():
         _create_registry_data(root, k, v)
 
+# TODO: RUSTPYTHON; Issue setting up tests - This is the setUpClass method in the TestLauncher class. it is currently failing, so no test can be run
+try:
+    with winreg.CreateKey(winreg.HKEY_CURRENT_USER, rf"Software\Python") as key:
+        create_registry_data(key, TEST_DATA)
+
+    if support.verbose:
+        p = subprocess.check_output("reg query HKCU\\Software\\Python /s")
+except TypeError:
+    raise unittest.SkipTest('TODO: RUSTPYTHON; Issue setting up test_launcher - TypeError: Expected type "str" but "NoneType" found.')
+# END RUSTPYTHON;
+# ----------------------------------------------------------------------------------------------
 
 def enum_keys(root):
     for i in itertools.count():

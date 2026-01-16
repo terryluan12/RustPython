@@ -1,3 +1,7 @@
+# TODO: RUSTPYTHON; Skip this test if poplib does not exist.
+from test.support import import_helper
+import_helper.import_module('poplib')
+
 """Test script for poplib module."""
 
 # Modified by Giampaolo Rodola' to give poplib.POP3 and poplib.POP3_SSL

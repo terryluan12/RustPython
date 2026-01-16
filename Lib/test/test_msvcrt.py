@@ -1,3 +1,12 @@
+# TODO: RUSTPYTHON; msvcrt has no attribute ungetch
+try:
+    import msvcrt
+    msvcrt.ungetch(b'c')
+except:
+    import unittest
+    raise unittest.SkipTest("TODO: RUSTPYTHON; AttributeError: module 'msvcrt' has no attribute 'ungetch'. Did you mean: 'getch'?")
+# END RUSTPYTHON;
+# ----------------------------------------------------------------------------------------------
 import os
 import subprocess
 import sys

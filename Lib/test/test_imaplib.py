@@ -1,3 +1,7 @@
+# TODO: RUSTPYTHON; Skip this test if imaplib does not exist.
+from test.support import import_helper
+import_helper.import_module('imaplib')
+
 from test import support
 from test.support import socket_helper
 

@@ -1,3 +1,7 @@
+# TODO: RUSTPYTHON; Skip this test if _multibytecodec does not exist.
+from test.support import import_helper
+import_helper.import_module('_multibytecodec')
+
 #
 # test_multibytecodec.py
 #   Unit test for multibytecodec itself

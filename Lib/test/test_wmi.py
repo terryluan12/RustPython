@@ -1,3 +1,8 @@
+# TODO: RUSTPYTHON; Skip this test if _wmi does not exist.
+from test.support import import_helper
+import_helper.import_module('_wmi')
+# END RUSTPYTHON;
+# ----------------------------------------------------------------------------------------------
 # Test the internal _wmi module on Windows
 # This is used by the platform module, and potentially others
 

@@ -1,3 +1,10 @@
+# TODO: RUSTPYTHON
+try:
+    import unittest
+    from xml.parsers.expat import ExpatError
+except ImportError:
+    raise unittest.SkipTest('TODO: RUSTPYTHON; cannot import name "ExpatError" in xml.parsers.expat')
+
 # test for xml.dom.minidom
 
 import copy

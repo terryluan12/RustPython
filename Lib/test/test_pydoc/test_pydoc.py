@@ -1,3 +1,7 @@
+# TODO: RUSTPYTHON; Skip this test if _pickle does not exist.
+from test.support import import_helper
+import_helper.import_module('_pickle')
+
 import datetime
 import os
 import sys

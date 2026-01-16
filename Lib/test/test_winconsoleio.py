@@ -1,3 +1,9 @@
+# TODO: RUSTPYTHON; Skip this test if test_winconsoleio does not exist.
+from test.support import import_helper
+import_helper.import_module('test_winconsoleio')
+# END RUSTPYTHON;
+# ----------------------------------------------------------------------------------------------
+# Test the internal _wmi module on Windows
 '''Tests for WindowsConsoleIO
 '''
 

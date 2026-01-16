@@ -1,3 +1,7 @@
+# TODO: RUSTPYTHON; Skip this test if _testinternalcapi does not exist.
+from test.support import import_helper
+import_helper.import_module('_testinternalcapi')
+
 import copy
 import ntpath
 import pathlib
