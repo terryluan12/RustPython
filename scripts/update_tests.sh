@@ -119,8 +119,7 @@ update_test() {
     local lib=$1
     local clib_path="$cpython_path/$lib"
     local rlib_path="$rpython_path/$lib"
-
-    if [[ ! -f "$rlib_path" ]] && ! [[ -f "$clib_path" && -f "$rlib_path" ]] && ! files_equal "$clib_path" "$rlib_path"; then
+    if [[ ! -e "$rlib_path" && -e "$clib_path" ]]; then
         echo "Test file $lib missing"
         if $copy_untracked; then
             echo "Copying $lib ..."
@@ -130,7 +129,7 @@ update_test() {
     else
         if [[ "$lib" == *.py ]]; then
             echo "Using lib_updater to update $lib"
-            ./scripts/lib_updater.py --from $clib_path --to $rlib_path -o $rlib_path
+            ./scripts/lib_updater.py --from $rlib_path --to $clib_path -o $rlib_path
         else
             cp $clib_path $rlib_path
         fi
