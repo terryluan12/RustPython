@@ -94,7 +94,9 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-cargo build --release --features encodings,sqlite 
+if ! [[ -f "$rpython_path/target/release/rustpython" ]]; then
+    cargo build --release --features encodings,sqlite 
+fi
 # -------------------------------------- Constants ------------------------------------- #
 RUSTPYTHON_POSSIBLE_SKIP_RE="@unittest.skip.*\([\"']TODO:\s*RUSTPYTHON.*[\"']\)"
 RUSTPYTHON_CANONICAL_SKIP_RE="@unittest.skip\('TODO: RUSTPYTHON; .*'\)"
@@ -126,8 +128,12 @@ update_test() {
             cp "$clib_path" "$rlib_path"
         fi
     else
-        echo "Using lib_updater to update $lib"
-        ./scripts/lib_updater.py --from $clib_path --to $rlib_path -o $rlib_path
+        if [[ "$lib" == *.py ]]; then
+            echo "Using lib_updater to update $lib"
+            ./scripts/lib_updater.py --from $clib_path --to $rlib_path -o $rlib_path
+        else
+            cp $clib_path $rlib_path
+        fi
     fi
 
 
