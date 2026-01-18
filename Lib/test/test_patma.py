@@ -82,7 +82,7 @@ class TestInheritance(unittest.TestCase):
         self.assertEqual(self.check_mapping_then_sequence(S3()), "seq")
         self.assertEqual(self.check_mapping_then_sequence(S4()), "seq")
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_late_registration_mapping(self):
         class Parent:
             pass
@@ -106,7 +106,7 @@ class TestInheritance(unittest.TestCase):
         self.assertEqual(self.check_mapping_then_sequence(ChildPost()), "map")
         self.assertEqual(self.check_mapping_then_sequence(GrandchildPost()), "map")
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_late_registration_sequence(self):
         class Parent:
             pass
@@ -2246,7 +2246,7 @@ class TestPatma(unittest.TestCase):
         self.assertEqual(f(None), {})
         self.assertEqual(f((1, 2)), {})
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_patma_210(self):
         def f(w):
             match w:
@@ -2955,7 +2955,7 @@ class TestSyntaxErrors(unittest.TestCase):
                 pass
         """)
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_invalid_syntax_3(self):
         self.assert_syntax_error("""
         match ...:
@@ -3075,7 +3075,7 @@ class TestSyntaxErrors(unittest.TestCase):
                 pass
         """)
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_patterns_may_only_match_literals_and_attribute_lookups_0(self):
         self.assert_syntax_error("""
         match ...:
@@ -3083,7 +3083,7 @@ class TestSyntaxErrors(unittest.TestCase):
                 pass
         """)
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_patterns_may_only_match_literals_and_attribute_lookups_1(self):
         self.assert_syntax_error("""
         match ...:
@@ -3126,7 +3126,7 @@ class TestSyntaxErrors(unittest.TestCase):
                 pass
         """)
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_real_number_wrong_ops(self):
         for op in ["*", "/", "@", "**", "%", "//"]:
             with self.subTest(op=op):
@@ -3202,7 +3202,7 @@ class TestSyntaxErrors(unittest.TestCase):
                 pass
         """)
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_mapping_pattern_duplicate_key_edge_case0(self):
         self.assert_syntax_error("""
         match ...:
@@ -3210,7 +3210,7 @@ class TestSyntaxErrors(unittest.TestCase):
                 pass
         """)
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_mapping_pattern_duplicate_key_edge_case1(self):
         self.assert_syntax_error("""
         match ...:
@@ -3226,7 +3226,7 @@ class TestSyntaxErrors(unittest.TestCase):
         """)
 
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_mapping_pattern_duplicate_key_edge_case3(self):
         self.assert_syntax_error("""
         match ...:
@@ -3258,7 +3258,7 @@ class TestTypeErrors(unittest.TestCase):
         self.assertEqual(x, range(10))
         self.assertIs(y, None)
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_got_multiple_subpatterns_for_attribute_0(self):
         class Class:
             __match_args__ = ("a", "a")
@@ -3273,7 +3273,7 @@ class TestTypeErrors(unittest.TestCase):
         self.assertIs(y, None)
         self.assertIs(z, None)
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_got_multiple_subpatterns_for_attribute_1(self):
         class Class:
             __match_args__ = ("a",)
@@ -3379,7 +3379,7 @@ class TestTypeErrors(unittest.TestCase):
 
 class TestValueErrors(unittest.TestCase):
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_mapping_pattern_checks_duplicate_key_1(self):
         class Keys:
             KEY = "a"
@@ -3433,7 +3433,7 @@ class TestTracing(unittest.TestCase):
             sys.settrace(old_trace)
         return actual_linenos
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_default_wildcard(self):
         def f(command):                                         # 0
             match command.split():                              # 1
@@ -3448,7 +3448,7 @@ class TestTracing(unittest.TestCase):
         self.assertListEqual(self._trace(f, "go x"), [1, 2, 4, 5])
         self.assertListEqual(self._trace(f, "spam"), [1, 2, 4, 6, 7])
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_default_capture(self):
         def f(command):                                         # 0
             match command.split():                              # 1
@@ -3463,7 +3463,7 @@ class TestTracing(unittest.TestCase):
         self.assertListEqual(self._trace(f, "go x"), [1, 2, 4, 5])
         self.assertListEqual(self._trace(f, "spam"), [1, 2, 4, 6, 7])
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_no_default(self):
         def f(command):                                         # 0
             match command.split():                              # 1
@@ -3476,7 +3476,7 @@ class TestTracing(unittest.TestCase):
         self.assertListEqual(self._trace(f, "go x"), [1, 2, 4, 5])
         self.assertListEqual(self._trace(f, "spam"), [1, 2, 4])
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_only_default_wildcard(self):
         def f(command):               # 0
             match command.split():    # 1
@@ -3487,7 +3487,7 @@ class TestTracing(unittest.TestCase):
         self.assertListEqual(self._trace(f, "go x"), [1, 2, 3])
         self.assertListEqual(self._trace(f, "spam"), [1, 2, 3])
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_only_default_capture(self):
         def f(command):             # 0
             match command.split():  # 1
@@ -3498,7 +3498,7 @@ class TestTracing(unittest.TestCase):
         self.assertListEqual(self._trace(f, "go x"), [1, 2, 3])
         self.assertListEqual(self._trace(f, "spam"), [1, 2, 3])
 
-    @unittest.expectedFailure   # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_unreachable_code(self):
         def f(command):               # 0
             match command:            # 1

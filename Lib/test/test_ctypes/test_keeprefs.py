@@ -12,8 +12,7 @@ class SimpleTestCase(unittest.TestCase):
         x = c_int(99)
         self.assertEqual(x._objects, None)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_ccharp(self):
         x = c_char_p()
         self.assertEqual(x._objects, None)
@@ -35,8 +34,7 @@ class StructureTestCase(unittest.TestCase):
         x.b = 99
         self.assertEqual(x._objects, None)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_ccharp_struct(self):
         class X(Structure):
             _fields_ = [("a", c_char_p),

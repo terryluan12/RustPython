@@ -51,8 +51,7 @@ class LoaderTests:
             with self.assertRaises(ImportError):
                 self.load_module('XXX')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_module(self):
         with util.uncache(util.EXTENSIONS.name):
             module = self.load_module(util.EXTENSIONS.name)
@@ -85,8 +84,7 @@ class LoaderTests:
             module2 = self.load_module(util.EXTENSIONS.name)
             self.assertIs(module1, module2)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_is_package(self):
         self.assertFalse(self.loader.is_package(util.EXTENSIONS.name))
         for suffix in self.machinery.EXTENSION_SUFFIXES:
@@ -181,7 +179,7 @@ class SinglePhaseExtensionModuleTests(abc.LoaderTests):
  ) = util.test_both(SinglePhaseExtensionModuleTests, machinery=machinery)
 
 
-# @unittest.skip("TODO: RUSTPYTHON, AssertionError")
+# @unittest.skip('TODO: RUSTPYTHON; AssertionError')
 class MultiPhaseExtensionModuleTests(abc.LoaderTests):
     # Test loading extension modules with multi-phase initialization (PEP 489).
 

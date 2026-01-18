@@ -61,7 +61,7 @@ def check_tracebacks(self, cm, exc, regex, obj_name):
         with contextlib.redirect_stderr(buf):
             yield
 
-        # TODO: RUSTPYTHON need unraisable exception
+        # TODO: RUSTPYTHON; need unraisable exception
         # self.assertEqual(cm.unraisable.exc_type, exc)
         # if regex:
         #     msg = str(cm.unraisable.exc_value)
@@ -783,7 +783,7 @@ class AuthorizerTests(unittest.TestCase):
         return sqlite.SQLITE_OK
 
     def setUp(self):
-        # TODO: RUSTPYTHON difference 'prohibited'
+        # TODO: RUSTPYTHON; difference 'prohibited'
         self.prohibited = 'not authorized'
         self.con = sqlite.connect(":memory:")
         self.con.executescript("""

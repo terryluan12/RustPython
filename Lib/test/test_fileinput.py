@@ -980,8 +980,7 @@ class Test_hook_encoded(unittest.TestCase):
         check('replace', ['\ufffdabc'])
         check('backslashreplace', ['\\x80abc'])
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_modes(self):
         with open(TESTFN, 'wb') as f:
             # UTF-7 is a convenient, seldom used encoding

@@ -47,8 +47,7 @@ class FunctionPropertiesTest(FuncAttrsTest):
     def test_module(self):
         self.assertEqual(self.b.__module__, __name__)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_dir_includes_correct_attrs(self):
         self.b.known_attr = 7
         self.assertIn('known_attr', dir(self.b),
@@ -76,8 +75,7 @@ class FunctionPropertiesTest(FuncAttrsTest):
         self.cannot_set_attr(self.b, '__globals__', 2,
                              (AttributeError, TypeError))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test___builtins__(self):
         self.assertIs(self.b.__builtins__, __builtins__)
         self.cannot_set_attr(self.b, '__builtins__', 2,
@@ -194,8 +192,7 @@ class FunctionPropertiesTest(FuncAttrsTest):
         # __qualname__ must be a string
         self.cannot_set_attr(self.b, '__qualname__', 7, TypeError)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test___code__(self):
         num_one, num_two = 7, 8
         def a(): pass
@@ -226,15 +223,13 @@ class FunctionPropertiesTest(FuncAttrsTest):
             self.fail("__code__ with different numbers of free vars should "
                       "not be possible")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_blank_func_defaults(self):
         self.assertEqual(self.b.__defaults__, None)
         del self.b.__defaults__
         self.assertEqual(self.b.__defaults__, None)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_func_default_args(self):
         def first_func(a, b):
             return a+b
@@ -395,8 +390,7 @@ def empty_cell(empty=True):
 
 
 class CellTest(unittest.TestCase):
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_comparison(self):
         # These tests are here simply to exercise the comparison code;
         # their presence should not be interpreted as providing any

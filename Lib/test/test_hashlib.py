@@ -295,8 +295,7 @@ class HashLibTestCase(unittest.TestCase):
                 self.assertIsInstance(h.digest(), bytes)
                 self.assertEqual(hexstr(h.digest()), h.hexdigest())
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_digest_length_overflow(self):
         # See issue #34922
         large_sizes = (2**29, 2**32-10, 2**32+10, 2**61, 2**64-10, 2**64+10)
@@ -464,8 +463,7 @@ class HashLibTestCase(unittest.TestCase):
         self.check_blocksize_name('sha384', 128, 48)
         self.check_blocksize_name('sha512', 128, 64)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @requires_sha3
     def test_blocksize_name_sha3(self):
         self.check_blocksize_name('sha3_224', 144, 28)
@@ -487,8 +485,7 @@ class HashLibTestCase(unittest.TestCase):
             self.assertEqual(m._rate_bits, rate)
             self.assertEqual(m._suffix, suffix)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @requires_sha3
     def test_extra_sha3(self):
         self.check_sha3('sha3_224', 448, 1152, b'\x06')
@@ -741,8 +738,7 @@ class HashLibTestCase(unittest.TestCase):
                 outer.update(keyed.digest())
         return outer.hexdigest()
 
-    # TODO: RUSTPYTHON add to constructor const value
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; add to constructor const value
     @requires_blake2
     def test_blake2b(self):
         self.check_blake2(hashlib.blake2b, 16, 16, 64, 64, (1<<64)-1)
@@ -764,8 +760,7 @@ class HashLibTestCase(unittest.TestCase):
           "ba80a53f981c4d0d6a2797b69f12f6e94c212f14685ac4b74b12bb6fdbffa2d1"+
           "7d87c5392aab792dc252d5de4533cc9518d38aa8dbf1925ab92386edd4009923")
 
-    # TODO: RUSTPYTHON implement all blake2 fields
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; implement all blake2 fields
     @requires_blake2
     def test_case_blake2b_all_parameters(self):
         # This checks that all the parameters work in general, and also that
@@ -791,8 +786,7 @@ class HashLibTestCase(unittest.TestCase):
             key = bytes.fromhex(key)
             self.check('blake2b', msg, md, key=key)
 
-    # TODO: RUSTPYTHON add to constructor const value
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; add to constructor const value
     @requires_blake2
     def test_blake2s(self):
         self.check_blake2(hashlib.blake2s, 8, 8, 32, 32, (1<<48)-1)
@@ -812,8 +806,7 @@ class HashLibTestCase(unittest.TestCase):
         self.check('blake2s', b"abc",
           "508c5e8c327c14e2e1a72ba34eeb452f37458b209ed63a294d999b4c86675982")
 
-    # TODO: RUSTPYTHON implement all blake2 fields
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; implement all blake2 fields
     @requires_blake2
     def test_case_blake2s_all_parameters(self):
         # This checks that all the parameters work in general, and also that
@@ -994,8 +987,7 @@ class HashLibTestCase(unittest.TestCase):
         support.check_disallow_instantiation(self, HASH)
         support.check_disallow_instantiation(self, HASHXOF)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_readonly_types(self):
         for algorithm, constructors in self.constructors_to_test.items():
             # all other types have DISALLOW_INSTANTIATION

@@ -30,8 +30,7 @@ class CodeopTests(unittest.TestCase):
         except OverflowError:
             self.assertTrue(not is_syntax)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_valid(self):
         av = self.assertValid
 
@@ -94,8 +93,7 @@ class CodeopTests(unittest.TestCase):
         av("def f():\n pass\n#foo\n")
         av("@a.b.c\ndef f():\n pass\n")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_incomplete(self):
         ai = self.assertIncomplete
 
@@ -282,8 +280,7 @@ class CodeopTests(unittest.TestCase):
         self.assertNotEqual(compile_command("a = 1\n", "abc").co_filename,
                             compile("a = 1\n", "def", 'single').co_filename)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_warning(self):
         # Test that the warning is only returned once.
         with warnings_helper.check_warnings(
@@ -309,8 +306,7 @@ class CodeopTests(unittest.TestCase):
             self.assertIncomplete("'\\e' + (")
         self.assertEqual(w, [])
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_invalid_warning(self):
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter('always')
@@ -325,8 +321,7 @@ class CodeopTests(unittest.TestCase):
             with self.assertRaisesRegex(SyntaxError, message):
                 compile_command(code, symbol='exec')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_syntax_errors(self):
         self.assertSyntaxErrorMatches(
             dedent("""\

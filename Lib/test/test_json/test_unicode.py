@@ -94,8 +94,7 @@ class TestUnicode:
         self.assertRaises(TypeError, self.dumps, b"hi")
         self.assertRaises(TypeError, self.dumps, [b"hi"])
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_bytes_decode(self):
         for encoding, bom in [
                 ('utf-8', codecs.BOM_UTF8),
@@ -141,17 +140,14 @@ class TestUnicode:
 class TestPyUnicode(TestUnicode, PyTest): pass
 
 class TestCUnicode(TestUnicode, CTest):
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_ascii_non_printable_encode(self):
         return super().test_ascii_non_printable_encode()
 
-    # TODO: RUSTPYTHON
-    @unittest.skip("TODO: RUSTPYTHON; panics with 'str has surrogates'")
+    @unittest.skip('TODO: RUSTPYTHON; panics with "str has surrogates"')
     def test_single_surrogate_decode(self):
         return super().test_single_surrogate_decode()
 
-    # TODO: RUSTPYTHON
-    @unittest.skip("TODO: RUSTPYTHON; panics with 'str has surrogates'")
+    @unittest.skip('TODO: RUSTPYTHON; panics with "str has surrogates"')
     def test_single_surrogate_encode(self):
         return super().test_single_surrogate_encode()

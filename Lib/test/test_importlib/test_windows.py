@@ -110,8 +110,7 @@ class WindowsRegistryFinderTests:
 
 @unittest.skipUnless(sys.platform.startswith('win'), 'requires Windows')
 class WindowsExtensionSuffixTests:
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_tagged_suffix(self):
         suffixes = self.machinery.EXTENSION_SUFFIXES
         expected_tag = ".cp{0.major}{0.minor}-{1}.pyd".format(sys.version_info,

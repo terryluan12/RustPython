@@ -1459,7 +1459,7 @@ class _TestLock(BaseTestCase):
         for _ in range(n):
             lock.release()
 
-    @unittest.skip("TODO: RUSTPYTHON; flaky timeout")
+    @unittest.skip('TODO: RUSTPYTHON; flaky timeout')
     def test_repr_rlock(self):
         if self.TYPE != 'processes':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
@@ -2972,8 +2972,7 @@ class _TestPool(BaseTestCase):
         # check that we indeed waited for all jobs
         self.assertGreater(time.monotonic() - t_start, 0.9)
 
-    # TODO: RUSTPYTHON - reference counting differences
-    @unittest.skip("TODO: RUSTPYTHON")
+    @unittest.skip('TODO: RUSTPYTHON; reference counting differences')
     def test_release_task_refs(self):
         # Issue #29861: task arguments and results should not be kept
         # alive after we are done with them.
@@ -3886,8 +3885,7 @@ class _TestPicklingConnections(BaseTestCase):
 
         conn.close()
 
-    # TODO: RUSTPYTHON - hangs
-    @unittest.skip("TODO: RUSTPYTHON")
+    @unittest.skip('TODO: RUSTPYTHON; hangs')
     def test_pickling(self):
         families = self.connection.families
 
@@ -4057,8 +4055,7 @@ class _TestHeap(BaseTestCase):
         self.assertEqual(len(heap._allocated_blocks), 0, heap._allocated_blocks)
         self.assertEqual(len(heap._len_to_seq), 0)
 
-    # TODO: RUSTPYTHON - gc.enable() not implemented
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; gc.enable() not implemented
     def test_free_from_gc(self):
         # Check that freeing of blocks by the garbage collector doesn't deadlock
         # (issue #12352).
@@ -4111,8 +4108,7 @@ class _TestSharedCTypes(BaseTestCase):
         for i in range(len(arr)):
             arr[i] *= 2
 
-    # TODO: RUSTPYTHON - ctypes Structure shared memory not working
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; ctypes Structure shared memory not working
     def test_sharedctypes(self, lock=False):
         x = Value('i', 7, lock=lock)
         y = Value(c_double, 1.0/3.0, lock=lock)
@@ -4136,8 +4132,7 @@ class _TestSharedCTypes(BaseTestCase):
             self.assertAlmostEqual(arr[i], i*2)
         self.assertEqual(string.value, latin('hellohello'))
 
-    # TODO: RUSTPYTHON - calls test_sharedctypes which fails
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; calls test_sharedctypes which fails
     def test_synchronize(self):
         self.test_sharedctypes(lock=True)
 
@@ -4815,8 +4810,7 @@ class _TestFinalize(BaseTestCase):
         result = [obj for obj in iter(conn.recv, 'STOP')]
         self.assertEqual(result, ['a', 'b', 'd10', 'd03', 'd02', 'd01', 'e'])
 
-    # TODO: RUSTPYTHON - gc.get_threshold() and gc.set_threshold() not implemented
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; gc.get_threshold() and gc.set_threshold() not implemented
     @support.requires_resource('cpu')
     def test_thread_safety(self):
         # bpo-24484: _run_finalizers() should be thread-safe
@@ -5444,8 +5438,7 @@ class TestFlags(unittest.TestCase):
         flags = (tuple(sys.flags), grandchild_flags)
         print(json.dumps(flags))
 
-    # TODO: RUSTPYTHON - SyntaxError in subprocess after fork
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; SyntaxError in subprocess after fork
     def test_flags(self):
         import json
         # start child process using unusual flags

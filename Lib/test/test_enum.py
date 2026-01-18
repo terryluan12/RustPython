@@ -659,7 +659,7 @@ class _EnumTests:
         self.assertEqual(str(Generic.item), 'item.test')
 
     def test_overridden_str(self):
-        # TODO: RUSTPYTHON, format(NS.first) does not use __str__
+        # TODO: RUSTPYTHON; format(NS.first) does not use __str__
         if self.__class__ in (TestIntFlagFunction, TestIntFlagClass, TestIntEnumFunction, TestIntEnumClass, TestMinimalFloatFunction, TestMinimalFloatClass):
             self.skipTest("format(NS.first) does not use __str__")
         NS = self.NewStrEnum
@@ -1544,9 +1544,7 @@ class TestSpecial(unittest.TestCase):
             [Outer.a, Outer.b, Outer.Inner],
             )
 
-    # TODO: RUSTPYTHON
-    # AssertionError: FutureWarning not triggered
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: FutureWarning not triggered
     def test_partial(self):
         def func(a, b=5):
             return a, b

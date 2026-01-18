@@ -181,8 +181,7 @@ class ReprTests(unittest.TestCase):
         self.assertTrue(r.startswith("<function ReprTests.test_lambda.<locals>.<lambda"), r)
         # XXX anonymous functions?  see func_repr
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_builtin_function(self):
         eq = self.assertEqual
         # Functions
@@ -214,8 +213,7 @@ class ReprTests(unittest.TestCase):
         eq(r([[[[[[{}]]]]]]), "[[[[[[{}]]]]]]")
         eq(r([[[[[[[{}]]]]]]]), "[[[[[[[...]]]]]]]")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_cell(self):
         def get_cell():
             x = 42
@@ -822,8 +820,7 @@ class TestRecursiveRepr(unittest.TestCase):
 
         self.assertIs(X.f, X.__repr__.__wrapped__)
 
-    # TODO: RUSTPYTHON: AttributeError: 'TypeVar' object has no attribute '__name__'
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AttributeError: 'TypeVar' object has no attribute '__name__'
     def test__type_params__(self):
         class My:
             @recursive_repr()

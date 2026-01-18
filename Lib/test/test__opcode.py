@@ -111,7 +111,7 @@ class StackEffectTests(unittest.TestCase):
 
 
 class SpecializationStatsTests(unittest.TestCase):
-    @unittest.expectedFailure # TODO: RUSTPYTHON - no specialization stats
+    @unittest.expectedFailure # TODO: RUSTPYTHON; - no specialization stats
     def test_specialization_stats(self):
         stat_names = ["success", "failure", "hit", "deferred", "miss", "deopt"]
         specialized_opcodes = [

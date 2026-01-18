@@ -736,7 +736,7 @@ class HandlerTest(BaseTest):
     @threading_helper.requires_working_threading()
     @skip_if_asan_fork
     @skip_if_tsan_fork
-    @unittest.skip("TODO: RUSTPYTHON; Flaky")
+    @unittest.skip('TODO: RUSTPYTHON; Flaky')
     def test_post_fork_child_no_deadlock(self):
         """Ensure child logging locks are not held; bpo-6721 & bpo-36533."""
         class _OurHandler(logging.Handler):
@@ -4057,9 +4057,7 @@ class ConfigDictTest(BaseTest):
         # log a message (this creates a record put in the queue)
         logging.getLogger().info(message_to_log)
 
-    @unittest.skip('TODO: RUSTPYTHON, flaky EOFError')
-    # TODO: RUSTPYTHON - SemLock not implemented on Windows
-    @unittest.expectedFailureIfWindows("TODO: RUSTPYTHON")
+    @unittest.skip('TODO: RUSTPYTHON; flaky EOFError - SemLock not implemented on Windows')
     @skip_if_tsan_fork
     @support.requires_subprocess()
     def test_multiprocessing_queues(self):
@@ -4119,8 +4117,7 @@ class ConfigDictTest(BaseTest):
         # Logger should be enabled, since explicitly mentioned
         self.assertFalse(logger.disabled)
 
-    # TODO: RUSTPYTHON - SemLock not implemented on Windows
-    @unittest.expectedFailureIfWindows("TODO: RUSTPYTHON")
+    @unittest.expectedFailureIfWindows('TODO: RUSTPYTHON; SemLock not implemented on Windows')
     def test_111615(self):
         # See gh-111615
         import_helper.import_module('_multiprocessing')  # see gh-113692

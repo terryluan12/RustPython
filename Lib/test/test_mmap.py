@@ -618,7 +618,7 @@ class MmapTests(unittest.TestCase):
             self.assertEqual(m.read_byte(), b)
             m.close()
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     def test_tagname(self):
         data1 = b"0123456789"
@@ -745,7 +745,7 @@ class MmapTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             m * 2
 
-    @unittest.skipIf(sys.platform.startswith("linux"), "TODO: RUSTPYTHON, memmap2 doesn't throw OSError when offset is not a multiple of mmap.PAGESIZE on Linux")
+    @unittest.skipIf(sys.platform.startswith("linux"), 'TODO: RUSTPYTHON; memmap2 doesnt throw OSError when offset is not a multiple of mmap.PAGESIZE on Linux')
     def test_flush_return_value(self):
         # mm.flush() should return None on success, raise an
         # exception on error under all platforms.
@@ -868,7 +868,7 @@ class MmapTests(unittest.TestCase):
         finally:
             f.close()
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     def test_resize_succeeds_with_error_for_second_named_mapping(self):
         """If a more than one mapping exists of the same name, none of them can

@@ -242,7 +242,7 @@ def clear_caches():
     except KeyError:
         pass
     else:
-        # struct._clearcache()  # TODO: RUSTPYTHON, investigate why this was disabled in the first place
+        # struct._clearcache()  # TODO: RUSTPYTHON; investigate why this was disabled in the first place
         pass
 
     try:
@@ -666,7 +666,7 @@ def display_header(use_resources: tuple[str, ...],
                     "%s-endian" % sys.byteorder)
     except Exception as e:
         print("==", f"Error: {e}")
-        print("==", "TODO: RUSTPYTHON, Need to fix platform.platform")
+        print("==", 'TODO: RUSTPYTHON; Need to fix platform.platform')
     print("== Python build:", ' '.join(get_build_info()))
     print("== cwd:", os.getcwd())
 
@@ -682,7 +682,7 @@ def display_header(use_resources: tuple[str, ...],
               % (locale.getencoding(), sys.getfilesystemencoding()))
     except Exception as e:
         print("==", f"Error: {e}")
-        print("==", "TODO: RUSTPYTHON, Need to fix encoding stuff")
+        print("==", 'TODO: RUSTPYTHON; Need to fix encoding stuff')
 
     if use_resources:
         text = format_resources(use_resources)

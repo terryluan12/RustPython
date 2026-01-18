@@ -191,16 +191,14 @@ class AbstractMemoryTests:
         self.assertEqual(m.suboffsets, ())
         return m
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_attributes_readonly(self):
         if not self.ro_type:
             self.skipTest("no read-only type to test")
         m = self.check_attributes_with_type(self.ro_type)
         self.assertEqual(m.readonly, True)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_attributes_writable(self):
         if not self.rw_type:
             self.skipTest("no writable type to test")
@@ -472,8 +470,7 @@ class BaseMemorySliceSliceTests:
 class BytesMemoryviewTest(unittest.TestCase,
     BaseMemoryviewTests, BaseBytesMemoryTests):
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_gc(self):
         super().test_gc()
 
@@ -501,8 +498,7 @@ class ArrayMemoryviewTest(unittest.TestCase,
 
 class BytesMemorySliceTest(unittest.TestCase,
     BaseMemorySliceTests, BaseBytesMemoryTests):
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_gc(self):
         super().test_gc()
     pass
@@ -513,8 +509,7 @@ class ArrayMemorySliceTest(unittest.TestCase,
 
 class BytesMemorySliceSliceTest(unittest.TestCase,
     BaseMemorySliceSliceTests, BaseBytesMemoryTests):
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_gc(self):
         super().test_gc()
     pass
@@ -562,8 +557,7 @@ class OtherTest(unittest.TestCase):
             with self.assertRaises(TypeError):
                 pickle.dumps(m, proto)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_use_released_memory(self):
         # gh-92888: Previously it was possible to use a memoryview even after
         # backing buffer is freed in certain cases. This tests that those

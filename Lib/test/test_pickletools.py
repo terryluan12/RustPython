@@ -62,45 +62,41 @@ class OptimizedPickleTests(AbstractPickleTests, unittest.TestCase):
         self.assertIs(unpickled2[1], unpickled2[2])
         self.assertNotIn(pickle.BINPUT, pickled2)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
-    def test_buffers_error(self): # TODO(RUSTPYTHON): Remove this test when it passes
+    # TODO: RUSTPYTHON; Remove this block when it passes
+    @unittest.expectedFailure # TODO: RUSTPYTHON
+    def test_buffers_error(self):
         return super().test_buffers_error()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
-    def test_builtin_functions(self): # TODO(RUSTPYTHON): Remove this test when it passes
+    @unittest.expectedFailure # TODO: RUSTPYTHON
+    def test_builtin_functions(self):
         return super().test_builtin_functions()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
-    def test_bytearray_memoization(self): # TODO(RUSTPYTHON): Remove this test when it passes
+    @unittest.expectedFailure # TODO: RUSTPYTHON
+    def test_bytearray_memoization(self):
         return super().test_bytearray_memoization()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
-    def test_bytes_memoization(self): # TODO(RUSTPYTHON): Remove this test when it passes
+    @unittest.expectedFailure # TODO: RUSTPYTHON
+    def test_bytes_memoization(self):
         return super().test_bytes_memoization()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
-    def test_in_band_buffers(self): # TODO(RUSTPYTHON): Remove this test when it passes
+    @unittest.expectedFailure # TODO: RUSTPYTHON
+    def test_in_band_buffers(self):
         return super().test_in_band_buffers()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
-    def test_oob_buffers(self): # TODO(RUSTPYTHON): Remove this test when it passes
+    @unittest.expectedFailure # TODO: RUSTPYTHON
+    def test_oob_buffers(self):
         return super().test_oob_buffers()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
-    def test_oob_buffers_writable_to_readonly(self): # TODO(RUSTPYTHON): Remove this test when it passes
+    @unittest.expectedFailure # TODO: RUSTPYTHON
+    def test_oob_buffers_writable_to_readonly(self):
         return super().test_oob_buffers_writable_to_readonly()
 
     # TODO: RUSTPYTHON
     @unittest.expectedFailure
     def test_c_methods(self): # TODO(RUSTPYTHON): Remove this test when it passes
         return super().test_c_methods()
+# END RUSTPYTHON;
+# ----------------------------------------------------------------------------------------------
 
 
 class SimpleReader:

@@ -281,8 +281,7 @@ class CodecCallbackTest(unittest.TestCase):
             b"g[<252><223>]"
         )
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_longstrings(self):
         # test long strings to check for memory overflow problems
         errors = [ "strict", "ignore", "replace", "xmlcharrefreplace",
@@ -684,8 +683,7 @@ class CodecCallbackTest(unittest.TestCase):
             ("\udc80", 2)
         )
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_badandgoodsurrogatepassexceptions(self):
         surrogatepass_errors = codecs.lookup_error('surrogatepass')
         # "surrogatepass" complains about a non-exception passed in
@@ -758,8 +756,7 @@ class CodecCallbackTest(unittest.TestCase):
                     (s[:1], 1 + n)
                 )
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_badhandlerresults(self):
         results = ( 42, "foo", (1,2,3), ("foo", 1, 3), ("foo", None), ("foo",), ("foo", 1, 3), ("foo", None), ("foo",) )
         encs = ("ascii", "latin-1", "iso-8859-1", "iso-8859-15")
@@ -802,8 +799,7 @@ class CodecCallbackTest(unittest.TestCase):
             codecs.lookup_error("namereplace")
         )
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_encode_nonascii_replacement(self):
         def handle(exc):
             if isinstance(exc, UnicodeEncodeError):
@@ -832,8 +828,7 @@ class CodecCallbackTest(unittest.TestCase):
                 self.assertEqual(exc.end, 2)
                 self.assertEqual(exc.object, input)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_encode_unencodable_replacement(self):
         def unencrepl(exc):
             if isinstance(exc, UnicodeEncodeError):
@@ -858,8 +853,7 @@ class CodecCallbackTest(unittest.TestCase):
                 self.assertEqual(exc.end, 2)
                 self.assertEqual(exc.object, input)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_encode_bytes_replacement(self):
         def handle(exc):
             if isinstance(exc, UnicodeEncodeError):
@@ -882,8 +876,7 @@ class CodecCallbackTest(unittest.TestCase):
                 res = input.encode(enc, "test.replacing")
                 self.assertEqual(res, "[".encode(enc) + repl + "]".encode(enc))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_encode_odd_bytes_replacement(self):
         def handle(exc):
             if isinstance(exc, UnicodeEncodeError):
@@ -1051,8 +1044,7 @@ class CodecCallbackTest(unittest.TestCase):
             self.assertRaises(ValueError, codecs.charmap_encode, "\xff", err, D())
             self.assertRaises(TypeError, codecs.charmap_encode, "\xff", err, {0xff: 300})
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_decodehelper_bug36819(self):
         handler = RepeatedPosReturn("x")
         codecs.register_error("test.bug36819", handler.handle)
@@ -1071,8 +1063,7 @@ class CodecCallbackTest(unittest.TestCase):
                 decoded = input.decode(enc, "test.bug36819")
                 self.assertEqual(decoded, 'abcdx' * 51)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_encodehelper_bug36819(self):
         handler = RepeatedPosReturn()
         codecs.register_error("test.bug36819", handler.handle)
@@ -1142,8 +1133,7 @@ class CodecCallbackTest(unittest.TestCase):
             text = 'abc<def>ghi'*n
             text.translate(charmap)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_mutatingdecodehandler(self):
         baddata = [
             ("ascii", b"\xff"),
@@ -1180,8 +1170,7 @@ class CodecCallbackTest(unittest.TestCase):
             self.assertEqual(data.decode(encoding, "test.mutating"), "\u4242")
 
     # issue32583
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_crashing_decode_handler(self):
         # better generating one more character to fill the extra space slot
         # so in debug build it can steadily fail

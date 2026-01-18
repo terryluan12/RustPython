@@ -667,8 +667,7 @@ class OrderedDictTests:
         dict.update(od, [('spam', 1)])
         self.assertNotIn('NULL', repr(od))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_reference_loop(self):
         # Issue 25935
         OrderedDict = self.OrderedDict
@@ -680,8 +679,7 @@ class OrderedDictTests:
         gc.collect()
         self.assertIsNone(r())
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, self.OrderedDict)
         support.check_free_after_iterating(self, lambda d: iter(d.keys()), self.OrderedDict)
@@ -808,8 +806,7 @@ class CPythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
         check(iter(od.items()), itersize)
         check(iter(od.values()), itersize)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_key_change_during_iteration(self):
         OrderedDict = self.OrderedDict
 
@@ -827,8 +824,7 @@ class CPythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
                 del od['c']
         self.assertEqual(list(od), list('bdeaf'))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_iterators_pickling(self):
         OrderedDict = self.OrderedDict
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]

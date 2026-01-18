@@ -934,8 +934,7 @@ class TestReplace(unittest.TestCase):
         self.assertEqual(attrs(copy.replace(a, y=2)), (11, 2, 13))
         self.assertEqual(attrs(copy.replace(a, x=1, y=2)), (1, 2, 3))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_namedtuple(self):
         from collections import namedtuple
         from typing import NamedTuple

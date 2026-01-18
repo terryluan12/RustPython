@@ -39,8 +39,7 @@ class ValuesTestCase(unittest.TestCase):
 class PythonValuesTestCase(unittest.TestCase):
     """This test only works when python itself is a dll/shared library"""
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_optimizeflag(self):
         # This test accesses the Py_OptimizeFlag integer, which is
         # exported by the Python dll and should match the sys.flags value
@@ -48,8 +47,7 @@ class PythonValuesTestCase(unittest.TestCase):
         opt = c_int.in_dll(pythonapi, "Py_OptimizeFlag").value
         self.assertEqual(opt, sys.flags.optimize)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_frozentable(self):
         # Python exports a PyImport_FrozenModules symbol. This is a
         # pointer to an array of struct _frozen entries.  The end of the

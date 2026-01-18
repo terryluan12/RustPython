@@ -6939,9 +6939,8 @@ class ExtensionModuleTests(unittest.TestCase):
                 """)
             script_helper.assert_python_ok('-c', script)
 
-    # TODO: RUSTPYTHON
-    # AssertionError: Process return code is 1
-    @unittest.expectedFailure
+    
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: Process return code is 1
     def test_update_type_cache(self):
         # gh-120782
         script = textwrap.dedent("""

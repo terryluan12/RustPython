@@ -1,5 +1,3 @@
-# TODO: RUSTPYTHON
-# Has not been tested with Windows style paths
 import io
 import os
 import sys

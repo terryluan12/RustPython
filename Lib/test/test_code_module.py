@@ -63,9 +63,7 @@ class TestInteractiveConsole(unittest.TestCase, MockSys):
         else:
             raise AssertionError("no console stdout")
 
-    # TODO: RUSTPYTHON
-    # AssertionError: Lists differ: ['  F[27 chars]    x = ?', '        ^', 'SyntaxError: got unexpected token ?'] != ['  F[27 chars]    x = ?', '        ^', 'SyntaxError: invalid syntax']
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: Lists differ: ['  F[27 chars]    x = ?', '        ^', 'SyntaxError: got unexpected token ?'] != ['  F[27 chars]    x = ?', '        ^', 'SyntaxError: invalid syntax']
     def test_syntax_error(self):
         self.infunc.side_effect = ["def f():",
                                    "    x = ?",
@@ -86,9 +84,7 @@ class TestInteractiveConsole(unittest.TestCase, MockSys):
         self.assertIsNone(self.sysmod.last_value.__traceback__)
         self.assertIs(self.sysmod.last_exc, self.sysmod.last_value)
 
-    # TODO: RUSTPYTHON
-    # AssertionError: Lists differ: ['  F[15 chars], line 1', '    1', 'IndentationError: unexpected indentation'] != ['  F[15 chars], line 1', '    1', 'IndentationError: unexpected indent']
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: Lists differ: ['  F[15 chars], line 1', '    1', 'IndentationError: unexpected indentation'] != ['  F[15 chars], line 1', '    1', 'IndentationError: unexpected indent']
     def test_indentation_error(self):
         self.infunc.side_effect = ["  1", EOFError('Finished')]
         self.console.interact()
@@ -104,10 +100,8 @@ class TestInteractiveConsole(unittest.TestCase, MockSys):
         self.assertIsNone(self.sysmod.last_traceback)
         self.assertIsNone(self.sysmod.last_value.__traceback__)
         self.assertIs(self.sysmod.last_exc, self.sysmod.last_value)
-
-    # TODO: RUSTPYTHON
-    # AssertionError: False is not true : UnicodeDecodeError: invalid utf-8 sequence of 1 bytes from index 1
-    @unittest.expectedFailure
+    
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: False is not true : UnicodeDecodeError: invalid utf-8 sequence of 1 bytes from index 1
     def test_unicode_error(self):
         self.infunc.side_effect = ["'\ud800'", EOFError('Finished')]
         self.console.interact()
@@ -144,9 +138,7 @@ class TestInteractiveConsole(unittest.TestCase, MockSys):
             '  File "<console>", line 2, in f\n',
             'ValueError: BOOM!\n'])
 
-    # TODO: RUSTPYTHON
-    # AssertionError: Lists differ: ['  F[35 chars]= ?\n', '        ^\n', 'SyntaxError: got unexpected token ?\n'] != ['  F[35 chars]= ?\n', '        ^\n', 'SyntaxError: invalid syntax\n']
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: Lists differ: ['  F[35 chars]= ?\n', '        ^\n', 'SyntaxError: got unexpected token ?\n'] != ['  F[35 chars]= ?\n', '        ^\n', 'SyntaxError: invalid syntax\n']
     def test_sysexcepthook_syntax_error(self):
         self.infunc.side_effect = ["def f():",
                                    "    x = ?",
@@ -170,9 +162,7 @@ class TestInteractiveConsole(unittest.TestCase, MockSys):
             '        ^\n',
             'SyntaxError: invalid syntax\n'])
 
-    # TODO: RUSTPYTHON
-    # AssertionError: Lists differ: ['  F[21 chars] 1\n', '    1\n', 'IndentationError: unexpected indentation\n'] != ['  F[21 chars] 1\n', '    1\n', 'IndentationError: unexpected indent\n']
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: Lists differ: ['  F[21 chars] 1\n', '    1\n', 'IndentationError: unexpected indentation\n'] != ['  F[21 chars] 1\n', '    1\n', 'IndentationError: unexpected indent\n']
     def test_sysexcepthook_indentation_error(self):
         self.infunc.side_effect = ["  1", EOFError('Finished')]
         hook = mock.Mock()

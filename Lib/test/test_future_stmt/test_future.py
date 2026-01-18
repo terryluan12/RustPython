@@ -81,9 +81,7 @@ class FutureTest(unittest.TestCase):
         ):
             from test.test_future_stmt import test_future_multiple_features
 
-    # TODO: RUSTPYTHON
-    # AssertionError: 1 != 24
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: 1 != 24
     def test_unknown_future_flag(self):
         code = """
             from __future__ import nested_scopes
@@ -114,9 +112,7 @@ class FutureTest(unittest.TestCase):
         """
         self.assertSyntaxError(code, lineno=3)
 
-    # TODO: RUSTPYTHON
-    # AssertionError: SyntaxError not raised
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: SyntaxError not raised
     def test_future_import_with_extra_string(self):
         code = """
             '''Docstring'''
@@ -139,18 +135,14 @@ class FutureTest(unittest.TestCase):
         """
         self.assertSyntaxError(code, offset=54)
 
-    # TODO: RUSTPYTHON
-    # AssertionError: 1 != 24
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: 1 != 24
     def test_future_import_star(self):
         code = """
             from __future__ import *
         """
         self.assertSyntaxError(code, message='future feature * is not defined', offset=24)
 
-    # TODO: RUSTPYTHON
-    # AssertionError: 'not a chance (<string>, line 2)' != 'future feature braces is not defined (<string>, line 2)'
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: 'not a chance (<string>, line 2)' != 'future feature braces is not defined (<string>, line 2)'
     def test_future_import_braces(self):
         code = """
             from __future__ import braces
@@ -482,9 +474,7 @@ class AnnotationsFutureTestCase(unittest.TestCase):
         self.assertEqual(foo.__code__.co_cellvars, ())
         self.assertEqual(foo().__code__.co_freevars, ())
 
-    # TODO: RUSTPYTHON
-    # AssertionError: SyntaxError not raised
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: SyntaxError not raised
     def test_annotations_forbidden(self):
         with self.assertRaises(SyntaxError):
             self._exec_future("test: (yield)")

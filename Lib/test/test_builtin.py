@@ -371,8 +371,7 @@ class BuiltinTest(unittest.TestCase):
                 rv = ns['f']()
                 self.assertEqual(rv, tuple(expected))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_compile_top_level_await_no_coro(self):
         """Make sure top level non-await codes get the correct coroutine flags"""
         modes = ('single', 'exec')
@@ -394,8 +393,7 @@ class BuiltinTest(unittest.TestCase):
                                 msg=f"source={source} mode={mode}")
 
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipIf(
         support.is_emscripten or support.is_wasi,
         "socket.accept is broken"
@@ -458,8 +456,7 @@ class BuiltinTest(unittest.TestCase):
         finally:
             asyncio.set_event_loop_policy(policy)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_compile_top_level_await_invalid_cases(self):
          # helper function just to check we can run top=level async-for
         async def arange(n):
@@ -498,8 +495,7 @@ class BuiltinTest(unittest.TestCase):
             asyncio.set_event_loop_policy(policy)
 
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_compile_async_generator(self):
         """
         With the PyCF_ALLOW_TOP_LEVEL_AWAIT flag added in 3.8, we want to
@@ -524,8 +520,7 @@ class BuiltinTest(unittest.TestCase):
         msg = r"^attribute name must be string, not 'int'$"
         self.assertRaisesRegex(TypeError, msg, delattr, sys, 1)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_dir(self):
         # dir(wrong number of arguments)
         self.assertRaises(TypeError, dir, 42, 42)
@@ -742,8 +737,7 @@ class BuiltinTest(unittest.TestCase):
             del l['__builtins__']
         self.assertEqual((g, l), ({'a': 1}, {'b': 2}))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_exec_globals(self):
         code = compile("print('Hello World!')", "", "exec")
         # no builtin function
@@ -753,8 +747,7 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError,
                           exec, code, {'__builtins__': 123})
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_exec_globals_frozen(self):
         class frozendict_error(Exception):
             pass
@@ -787,8 +780,7 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(frozendict_error,
                           exec, code, namespace)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_exec_globals_error_on_get(self):
         # custom `globals` or `builtins` can raise errors on item access
         class setonlyerror(Exception):
@@ -808,8 +800,7 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(setonlyerror, exec, code,
                           {'__builtins__': setonlydict({'superglobal': 1})})
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_exec_globals_dict_subclass(self):
         class customdict(dict):  # this one should not do anything fancy
             pass
@@ -832,8 +823,7 @@ class BuiltinTest(unittest.TestCase):
         finally:
             sys.stdout = savestdout
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_exec_closure(self):
         def function_without_closures():
             return 3 * 5
@@ -1332,8 +1322,7 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(ValueError, open, 'a\x00b')
         self.assertRaises(ValueError, open, b'a\x00b')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipIf(sys.flags.utf8_mode, "utf-8 mode is enabled")
     def test_open_default_encoding(self):
         old_environ = dict(os.environ)
@@ -2238,7 +2227,7 @@ class PtyTests(unittest.TestCase):
             expected = terminal_input.decode(sys.stdin.encoding)  # what else?
         self.assertEqual(input_result, expected)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_input_tty(self):
         # Test input() functionality when wired to a tty (the code path
         # is different and invokes GNU readline if available).
@@ -2255,21 +2244,21 @@ class PtyTests(unittest.TestCase):
             self.skipTest("the readline module is loaded")
 
     @unittest.skipUnless(hasattr(sys.stdin, 'detach'), 'TODO: RustPython: requires detach function in TextIOWrapper')
-    @unittest.expectedFailure  # TODO: RUSTPYTHON AssertionError: got 0 lines in pipe but expected 2, child output was: quux
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: got 0 lines in pipe but expected 2, child output was: quux
     def test_input_tty_non_ascii(self):
         self.skip_if_readline()
         # Check stdin/stdout encoding is used when invoking PyOS_Readline()
         self.check_input_tty("prompté", b"quux\xe9", "utf-8")
 
     @unittest.skipUnless(hasattr(sys.stdin, 'detach'), 'TODO: RustPython: requires detach function in TextIOWrapper')
-    @unittest.expectedFailure  # TODO: RUSTPYTHON AssertionError: got 0 lines in pipe but expected 2, child output was: quux
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: got 0 lines in pipe but expected 2, child output was: quux
     def test_input_tty_non_ascii_unicode_errors(self):
         self.skip_if_readline()
         # Check stdin/stdout error handler is used when invoking PyOS_Readline()
         self.check_input_tty("prompté", b"quux\xe9", "ascii")
 
-    @unittest.skip('TODO: RUSTPYTHON FAILURE, WORKER BUG')
-    @unittest.expectedFailure  # TODO: RUSTPYTHON AssertionError: got 0 lines in pipe but expected 2, child output was: quux
+    @unittest.skip('TODO: RUSTPYTHON; FAILURE, WORKER BUG')
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: got 0 lines in pipe but expected 2, child output was: quux
     def test_input_no_stdout_fileno(self):
         # Issue #24402: If stdin is the original terminal but stdout.fileno()
         # fails, do not use the original stdout file descriptor
@@ -2330,8 +2319,7 @@ class TestSorted(unittest.TestCase):
 
 class ShutdownTest(unittest.TestCase):
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_cleanup(self):
         # Issue #19255: builtins are still available at shutdown
         code = """if 1:
@@ -2508,7 +2496,7 @@ class TestType(unittest.TestCase):
         with self.assertRaises(TypeError):
             type('A', (B,), {'__slots__': '__weakref__'})
 
-    @unittest.skip("TODO: RUSTPYTHON; random failure")
+    @unittest.skip('TODO: RUSTPYTHON; random failure')
     def test_namespace_order(self):
         # bpo-34320: namespace should preserve order
         od = collections.OrderedDict([('a', 1), ('b', 2)])

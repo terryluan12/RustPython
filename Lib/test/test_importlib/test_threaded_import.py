@@ -140,8 +140,7 @@ class ThreadedImportTests(unittest.TestCase):
     def test_parallel_module_init(self):
         self.check_parallel_module_init()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_parallel_meta_path(self):
         finder = Finder()
         sys.meta_path.insert(0, finder)
@@ -152,8 +151,7 @@ class ThreadedImportTests(unittest.TestCase):
         finally:
             sys.meta_path.remove(finder)
 
-    # TODO: RUSTPYTHON; maybe hang?
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; maybe hang?
     def test_parallel_path_hooks(self):
         # Here the Finder instance is only used to check concurrent calls
         # to path_hook().

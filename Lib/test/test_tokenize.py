@@ -1024,8 +1024,8 @@ class TestTokenizerAdheresToPep0263(TestCase):
         f = 'tokenize_tests-utf8-coding-cookie-and-utf8-bom-sig.txt'
         self._testFile(f)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure # "bad_coding.py" and "bad_coding2.py" make the WASM CI fail
+    
+    @unittest.expectedFailure # TODO: RUSTPYTHON; "bad_coding.py" and "bad_coding2.py" make the WASM CI fail
     def test_bad_coding_cookie(self):
         self.assertRaises(SyntaxError, self._testFile, 'bad_coding.py')
         self.assertRaises(SyntaxError, self._testFile, 'bad_coding2.py')
@@ -1611,8 +1611,7 @@ class TestRoundtrip(TestCase):
         # Two string literals on the same line
         self.check_roundtrip("'' ''")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_random_files(self):
         # Test roundtrip on random python modules.
         # pass the '-ucpu' option to process the full directory.

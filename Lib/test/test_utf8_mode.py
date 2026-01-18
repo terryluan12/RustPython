@@ -46,8 +46,7 @@ class UTF8ModeTests(unittest.TestCase):
                 out = self.get_output('-c', code, LC_ALL=loc)
                 self.assertEqual(out, '1')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_xoption(self):
         code = 'import sys; print(sys.flags.utf8_mode)'
 
@@ -68,8 +67,7 @@ class UTF8ModeTests(unittest.TestCase):
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
             self.assertEqual(out, '0')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_env_var(self):
         code = 'import sys; print(sys.flags.utf8_mode)'
 
@@ -102,7 +100,7 @@ class UTF8ModeTests(unittest.TestCase):
         self.assertIn('invalid PYTHONUTF8 environment variable value',
                       out.rstrip())
 
-    @unittest.expectedFailureIf(MS_WINDOWS, "TODO: RUSTPYTHON")
+    @unittest.expectedFailureIf(MS_WINDOWS, 'TODO: RUSTPYTHON')
     def test_filesystemencoding(self):
         code = textwrap.dedent('''
             import sys
@@ -126,8 +124,7 @@ class UTF8ModeTests(unittest.TestCase):
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
             self.assertEqual(out, 'mbcs/replace')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_stdio(self):
         code = textwrap.dedent('''
             import sys
@@ -217,7 +214,7 @@ class UTF8ModeTests(unittest.TestCase):
                 out = self.get_output('-X', 'utf8', '-c', code, LC_ALL=loc)
                 self.assertEqual(out, 'utf-8 utf-8')
 
-    @unittest.expectedFailureIf(sys.platform.startswith("linux"), "TODO: RUSTPYTHON")
+    @unittest.expectedFailureIf(sys.platform.startswith("linux"), 'TODO: RUSTPYTHON')
     @unittest.skipIf(MS_WINDOWS, 'test specific to Unix')
     def test_cmd_line(self):
         arg = 'h\xe9\u20ac'.encode('utf-8')
@@ -260,8 +257,7 @@ class UTF8ModeTests(unittest.TestCase):
         out = self.get_output('-X', 'utf8', '-E', '-c', code)
         self.assertEqual(out, '1')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipIf(MS_WINDOWS,
                      "os.device_encoding() doesn't implement "
                      "the UTF-8 Mode on Windows")

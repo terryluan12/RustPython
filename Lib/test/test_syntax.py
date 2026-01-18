@@ -2741,7 +2741,7 @@ while 1:
 
 
 def load_tests(loader, tests, pattern):
-    # TODO: RUSTPYTHON Eventually remove the optionflags for ingoring exception details.
+    # TODO: RUSTPYTHON; Eventually remove the optionflags for ingoring exception details.
     tests.addTest(doctest.DocTestSuite(optionflags=doctest.IGNORE_EXCEPTION_DETAIL))
     return tests
 

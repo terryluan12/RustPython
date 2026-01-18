@@ -176,8 +176,7 @@ class ArrayReconstructorTest(unittest.TestCase):
                 self.assertEqual(a, b,
                     msg="{0!r} != {1!r}; testcase={2!r}".format(a, b, testcase))
 
-    # TODO: RUSTPYTHON - requires UTF-32 encoding support in codecs and proper array reconstructor implementation
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; requires UTF-32 encoding support in codecs and proper array reconstructor implementation
     def test_unicode(self):
         teststr = "Bonne Journ\xe9e \U0002030a\U00020347"
         testcases = (
@@ -357,8 +356,7 @@ class BaseTest:
         self.assertEqual(list(a), list(self.example))
         self.assertEqual(list(reversed(a)), list(iter(a))[::-1])
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_reverse_iterator_picking(self):
         orig = array.array(self.typecode, self.example)
         data = list(orig)
@@ -1156,8 +1154,7 @@ class BaseTest:
         a = array.array('B', b"")
         self.assertRaises(BufferError, _testcapi.getbuffer_with_null_view, a)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, array.array,
                                            (self.typecode,))

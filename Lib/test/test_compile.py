@@ -152,8 +152,7 @@ if 1:
         pass"""
         compile(s, "<string>", "exec")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     # This test is probably specific to CPython and may not generalize
     # to other implementations.  We are trying to ensure that when
     # the first line of code starts after 256, correct line numbers
@@ -199,8 +198,7 @@ if 1:
         self.assertEqual(eval("0o777"), 511)
         self.assertEqual(eval("-0o0000010"), -8)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_int_literals_too_long(self):
         n = 3000
         source = f"a = 1\nb = 2\nc = {'3'*n}\nd = 4"
@@ -274,8 +272,7 @@ if 1:
             self.assertRaises(SyntaxError, compile, stmt, 'tmp', 'single')
             self.assertRaises(SyntaxError, compile, stmt, 'tmp', 'exec')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_import(self):
         succeed = [
             'import sys',
@@ -336,8 +333,7 @@ if 1:
         l = lambda: "foo"
         self.assertIsNone(l.__doc__)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_encoding(self):
         code = b'# -*- coding: badencoding -*-\npass\n'
         self.assertRaises(SyntaxError, compile, code, 'tmp', 'exec')
@@ -450,8 +446,7 @@ if 1:
         self.assertIn("_A__mangled_mod", A.f.__code__.co_varnames)
         self.assertIn("__package__", A.f.__code__.co_varnames)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_compile_ast(self):
         fname = __file__
         if fname.lower().endswith('pyc'):
@@ -498,8 +493,7 @@ if 1:
         d = {f(): f(), f(): f()}
         self.assertEqual(d, {1: 2, 3: 4})
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_compile_filename(self):
         for filename in 'file.py', b'file.py':
             code = compile('pass', filename, 'exec')
@@ -535,8 +529,7 @@ if 1:
         self.compile_single("class T:\n   pass")
         self.compile_single("c = '''\na=1\nb=2\nc=3\n'''")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_bad_single_statement(self):
         self.assertInvalidSingle('1\n2')
         self.assertInvalidSingle('def f(): pass')
@@ -548,8 +541,7 @@ if 1:
         self.assertInvalidSingle('x = 5 # comment\nx = 6\n')
         self.assertInvalidSingle("c = '''\nd=1\n'''\na = 1\n\nb = 2\n")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_particularly_evil_undecodable(self):
         # Issue 24022
         src = b'0000\x00\n00000000000\n\x00\n\x9e\n'
@@ -560,8 +552,7 @@ if 1:
             res = script_helper.run_python_until_end(fn)[0]
         self.assertIn(b"Non-UTF-8", res.err)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_yet_more_evil_still_undecodable(self):
         # Issue #25388
         src = b"#\x00\n#\xfd\n"
@@ -603,8 +594,7 @@ if 1:
         # check_limit("a", " if a else a")
         # check_limit("if a: pass", "\nelif a: pass", mode="exec")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_null_terminated(self):
         # The source code is null-terminated internally, but bytes-like
         # objects are accepted, which could be not terminated.
@@ -717,8 +707,7 @@ if 1:
             'RETURN_VALUE',
             list(dis.get_instructions(unused_code_at_end))[-1].opname)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_dont_merge_constants(self):
         # Issue #25843: compile() must not merge constants which are equal
         # but have a different type.
@@ -802,8 +791,7 @@ if 1:
             self.assertEqual(None, opcodes[-2].argval)
             self.assertEqual('RETURN_VALUE', opcodes[-1].opname)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_false_while_loop(self):
         def break_in_while():
             while False:
@@ -823,8 +811,7 @@ if 1:
             self.assertEqual(None, opcodes[1].argval)
             self.assertEqual('RETURN_VALUE', opcodes[2].opname)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_consts_in_conditionals(self):
         def and_true(x):
             return True and x
@@ -848,8 +835,7 @@ if 1:
                 self.assertIn('LOAD_', opcodes[-2].opname)
                 self.assertEqual('RETURN_VALUE', opcodes[-1].opname)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_imported_load_method(self):
         sources = [
             """\
@@ -892,8 +878,7 @@ if 1:
         line1 = call.__code__.co_firstlineno + 1
         assert line1 not in [line for (_, _, line) in call.__code__.co_lines()]
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_lineno_after_implicit_return(self):
         TRUE = True
         # Don't use constant True or False, as compiler will remove test
@@ -928,8 +913,7 @@ if 1:
                 func(save_caller_frame)
                 self.assertEqual(frame.f_lineno-frame.f_code.co_firstlineno, lastline)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_lineno_after_no_code(self):
         def no_code1():
             "doc string"
@@ -954,8 +938,7 @@ if 1:
                 last_line = line
         return res
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_lineno_attribute(self):
         def load_attr():
             return (
@@ -1000,8 +983,7 @@ if 1:
                 code_lines = self.get_code_lines(func.__code__)
                 self.assertEqual(lines, code_lines)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_line_number_genexp(self):
 
         def return_genexp():
@@ -1016,8 +998,7 @@ if 1:
         code_lines = self.get_code_lines(genexp_code)
         self.assertEqual(genexp_lines, code_lines)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_line_number_implicit_return_after_async_for(self):
 
         async def test(aseq):
@@ -1077,8 +1058,7 @@ if 1:
         for instr in dis.Bytecode(while_not_chained):
             self.assertNotEqual(instr.opname, "EXTENDED_ARG")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_compare_positions(self):
         for opname, op in [
             ("COMPARE_OP", "<"),
@@ -1397,44 +1377,36 @@ class TestExpressionStackSize(unittest.TestCase):
     def test_binop(self):
         self.check_stack_size("x + " * self.N + "x")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_list(self):
         self.check_stack_size("[" + "x, " * self.N + "x]")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_tuple(self):
         self.check_stack_size("(" + "x, " * self.N + "x)")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_set(self):
         self.check_stack_size("{" + "x, " * self.N + "x}")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_dict(self):
         self.check_stack_size("{" + "x:x, " * self.N + "x:x}")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_func_args(self):
         self.check_stack_size("f(" + "x, " * self.N + ")")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_func_kwargs(self):
         kwargs = (f'a{i}=x' for i in range(self.N))
         self.check_stack_size("f(" +  ", ".join(kwargs) + ")")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_meth_args(self):
         self.check_stack_size("o.m(" + "x, " * self.N + ")")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_meth_kwargs(self):
         kwargs = (f'a{i}=x' for i in range(self.N))
         self.check_stack_size("o.m(" +  ", ".join(kwargs) + ")")

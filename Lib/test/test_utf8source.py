@@ -14,8 +14,7 @@ class PEP3120Test(unittest.TestCase):
             b'\\\xd0\x9f'
         )
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_badsyntax(self):
         try:
             import test.badsyntax_pep3120
@@ -28,8 +27,7 @@ class PEP3120Test(unittest.TestCase):
 
 class BuiltinCompileTests(unittest.TestCase):
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     # Issue 3574.
     def test_latin1(self):
         # Allow compile() to read Latin-1 source.

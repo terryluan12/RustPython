@@ -830,9 +830,8 @@ class CExplicitConstructionTest(ExplicitConstructionTest, unittest.TestCase):
 class PyExplicitConstructionTest(ExplicitConstructionTest, unittest.TestCase):
     decimal = P
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
-    def test_unicode_digits(self): # TODO(RUSTPYTHON): Remove this test when it pass
+    @unittest.expectedFailure # TODO: RUSTPYTHON; Remove this test when it passes
+    def test_unicode_digits(self):
         return super().test_unicode_digits()
 
 class ImplicitConstructionTest:
@@ -4684,9 +4683,8 @@ class PyCoverage(Coverage, unittest.TestCase):
         sys.set_int_max_str_digits(self._previous_int_limit)
         super().tearDown()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
-    def test_implicit_context(self): # TODO(RUSTPYTHON): Remove this test when it pass
+    @unittest.expectedFailure # TODO: RUSTPYTHON; Remove this test when it passes
+    def test_implicit_context(self):
         return super().test_implicit_context()
 
 class PyFunctionality(unittest.TestCase):
