@@ -614,17 +614,15 @@ class TestSupport(unittest.TestCase, ExtraAssertions):
         self.check_print_warning("a\nb",
                                  'Warning -- a\nWarning -- b\n')
 
-    # TODO: RUSTPYTHON - strftime extension not fully supported on non-Windows
     @unittest.skipUnless(sys.platform == "win32" or support.is_emscripten,
-                         "strftime extension not fully supported on non-Windows")
+                         'TODO: RUSTPYTHON; strftime extension not fully supported on non-Windows')
     def test_has_strftime_extensions(self):
         if support.is_emscripten or sys.platform == "win32":
             self.assertFalse(support.has_strftime_extensions)
         else:
             self.assertTrue(support.has_strftime_extensions)
 
-    # TODO: RUSTPYTHON - _testinternalcapi module not available
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; _testinternalcapi module not available
     def test_get_recursion_depth(self):
         # test support.get_recursion_depth()
         code = textwrap.dedent("""
@@ -668,8 +666,7 @@ class TestSupport(unittest.TestCase, ExtraAssertions):
         """)
         script_helper.assert_python_ok("-c", code)
 
-    # TODO: RUSTPYTHON - stack overflow in debug mode with deep recursion
-    @unittest.skip("TODO: RUSTPYTHON - causes segfault in debug builds")
+    @unittest.skip('TODO: RUSTPYTHON; stack overflow in debug mode with deep recursion')
     def test_recursion(self):
         # Test infinite_recursion() and get_recursion_available() functions.
         def recursive_function(depth):

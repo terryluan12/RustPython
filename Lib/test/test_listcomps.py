@@ -648,8 +648,7 @@ class ListComprehensionTest(unittest.TestCase):
         """
         self._check_in_scopes(code, {"value": [1, None]})
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_frame_locals(self):
         code = """
             val = "a" in [sys._getframe().f_locals for a in [0]][0]
@@ -716,8 +715,7 @@ class ListComprehensionTest(unittest.TestCase):
         self._check_in_scopes(code, {"x": 2, "y": [3]}, ns={"x": 3}, scopes=["class"])
         self._check_in_scopes(code, {"x": 2, "y": [2]}, ns={"x": 3}, scopes=["function", "module"])
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_exception_locations(self):
         # The location of an exception raised from __init__ or
         # __next__ should should be the iterator expression

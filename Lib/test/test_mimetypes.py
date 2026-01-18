@@ -54,8 +54,7 @@ class MimeTypesTestCase(unittest.TestCase):
            ("x-application/x-unittest", None))
         eq(self.db.guess_extension("x-application/x-unittest"), ".pyunit")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_read_mime_types(self):
         eq = self.assertEqual
 

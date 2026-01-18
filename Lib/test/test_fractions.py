@@ -1591,9 +1591,7 @@ class FractionTest(unittest.TestCase):
                     self.assertEqual(float(format(f, fmt2)), float(rhs))
                     self.assertEqual(float(format(-f, fmt2)), float('-' + rhs))
 
-    # TODO: RUSTPYTHON
-    # TypeError: '%' not supported between instances of 'Fraction' and 'complex'
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; TypeError: '%' not supported between instances of 'Fraction' and 'complex'
     def test_complex_handling(self):
         # See issue gh-102840 for more details.
 

@@ -418,9 +418,7 @@ class FormatTest(unittest.TestCase):
         self.assertEqual(format(1+2j, "\u2007^8"), "\u2007(1+2j)\u2007")
         self.assertEqual(format(0j, "\u2007^4"), "\u20070j\u2007")
 
-    # TODO: RUSTPYTHON formatting does not support locales
-    # See https://github.com/RustPython/RustPython/issues/5181
-    @unittest.skip("formatting does not support locales")
+    @unittest.skip('TODO: RUSTPYTHON; formatting does not support locales - See https://github.com/RustPython/RustPython/issues/5181')
     def test_locale(self):
         try:
             oldloc = locale.setlocale(locale.LC_ALL)
@@ -522,8 +520,7 @@ class FormatTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, error_msg):
             '{:_,}'.format(1)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_better_error_message_format(self):
         # https://bugs.python.org/issue20524
         for value in [12j, 12, 12.0, "12"]:
@@ -545,16 +542,14 @@ class FormatTest(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, err):
                     eval("f'xx{value:{bad_format_spec}}yy'")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_unicode_in_error_message(self):
         str_err = re.escape(
             "Invalid format specifier '%ЫйЯЧ' for object of type 'str'")
         with self.assertRaisesRegex(ValueError, str_err):
             "{a:%ЫйЯЧ}".format(a='a')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_negative_zero(self):
         ## default behavior
         self.assertEqual(f"{-0.:.1f}", "-0.0")
@@ -612,8 +607,7 @@ class FormatTest(unittest.TestCase):
         self.assertEqual(f"{-0.:x>z6.1f}", "xxx0.0")
         self.assertEqual(f"{-0.:🖤>z6.1f}", "🖤🖤🖤0.0")  # multi-byte fill char
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_specifier_z_error(self):
         error_msg = re.compile("Invalid format specifier '.*z.*'")
         with self.assertRaisesRegex(ValueError, error_msg):

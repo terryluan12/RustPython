@@ -70,8 +70,7 @@ class FindSpecTests(abc.FinderTests):
             expected = [os.path.dirname(filename)]
         self.assertListEqual(spec.submodule_search_locations, expected)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_module(self):
         modules = [
             '__hello__',
@@ -114,8 +113,7 @@ class FindSpecTests(abc.FinderTests):
                 self.check_basic(spec, name)
                 self.check_loader_state(spec, origname, filename)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_package(self):
         packages = [
             '__phello__',
@@ -170,8 +168,7 @@ class FindSpecTests(abc.FinderTests):
         spec = self.find('<not real>')
         self.assertIsNone(spec)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_not_using_frozen(self):
         finder = self.machinery.FrozenImporter
         with import_helper.frozen_modules(enabled=False):

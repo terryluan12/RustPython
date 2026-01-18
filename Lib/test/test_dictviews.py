@@ -277,8 +277,7 @@ class DictSetTest(unittest.TestCase):
         # Again.
         self.assertIsInstance(r, str)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_deeply_nested_repr(self):
         d = {}
         for i in range(get_c_recursion_limit()//2 + 100):
@@ -291,8 +290,7 @@ class DictSetTest(unittest.TestCase):
         self.assertRaises(TypeError, copy.copy, d.values())
         self.assertRaises(TypeError, copy.copy, d.items())
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_compare_error(self):
         class Exc(Exception):
             pass

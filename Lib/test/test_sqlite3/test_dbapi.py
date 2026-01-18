@@ -418,8 +418,7 @@ class ConnectionTests(unittest.TestCase):
             with self.cx:
                 pass
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_exceptions(self):
         # Optional DB-API extension.
         self.assertEqual(self.cx.Warning, sqlite.Warning)
@@ -455,8 +454,7 @@ class ConnectionTests(unittest.TestCase):
         with self.assertRaises(AttributeError):
             self.cx.in_transaction = True
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_connection_exceptions(self):
         exceptions = [
             "DataError",
@@ -722,8 +720,7 @@ class OpenTests(unittest.TestCase):
             self.assertTrue(os.path.exists(path))
             cx.execute(self._sql)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_factory_database_arg(self):
         def factory(database, *args, **kwargs):
             nonlocal database_arg
@@ -1183,8 +1180,7 @@ class BlobTests(unittest.TestCase):
         self.blob.seek(-10, SEEK_END)
         self.assertEqual(self.blob.tell(), 40)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_blob_seek_error(self):
         msg_oor = "offset out of blob range"
         msg_orig = "'origin' should be os.SEEK_SET, os.SEEK_CUR, or os.SEEK_END"
@@ -1359,8 +1355,7 @@ class BlobTests(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, msg):
             self.blob["a"] = b"b"
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_blob_get_item_error(self):
         dataset = [len(self.blob), 105, -105]
         for idx in dataset:
@@ -1375,8 +1370,7 @@ class BlobTests(unittest.TestCase):
         with self.assertRaises(sqlite.OperationalError):
             self.blob[0]
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_blob_set_item_error(self):
         with self.assertRaisesRegex(TypeError, "cannot be interpreted"):
             self.blob[0] = b"multiple"
@@ -1529,8 +1523,7 @@ class ThreadTests(unittest.TestCase):
             with self.subTest(fn=fn):
                 self._run_test(fn)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_check_cursor_thread(self):
         fns = [
             lambda: self.cur.execute("insert into test(name) values('a')"),

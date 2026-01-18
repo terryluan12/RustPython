@@ -330,8 +330,7 @@ class CodeTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             co.replace(co_nlocals=co.co_nlocals + 1)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_shrinking_localsplus(self):
         # Check that PyCode_NewWithPosOnlyArgs resizes both
         # localsplusnames and localspluskinds, if an argument is a cell.
@@ -347,8 +346,7 @@ class CodeTest(unittest.TestCase):
         new_code = code = func.__code__.replace(co_linetable=b'')
         self.assertEqual(list(new_code.co_lines()), [])
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_co_lnotab_is_deprecated(self):  # TODO: remove in 3.14
         def func():
             pass
@@ -356,8 +354,7 @@ class CodeTest(unittest.TestCase):
         with self.assertWarns(DeprecationWarning):
             func.__code__.co_lnotab
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_invalid_bytecode(self):
         def foo():
             pass
@@ -373,8 +370,7 @@ class CodeTest(unittest.TestCase):
         with self.assertRaisesRegex(SystemError, msg):
             foo()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     # @requires_debug_ranges()
     def test_co_positions_artificial_instructions(self):
         import dis

@@ -1728,8 +1728,7 @@ class TzPathTest(TzPathUserMixin, ZoneInfoTestBase):
                 with self.subTest("filtered", path_var=path_var):
                     self.assertSequenceEqual(tzpath, expected_paths)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_env_variable_relative_paths_warning_location(self):
         path_var = "path/to/somewhere"
 
@@ -1824,8 +1823,7 @@ class TestModule(ZoneInfoTestBase):
         with self.assertRaises(AttributeError):
             self.module.NOATTRIBUTE
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_dir_contains_all(self):
         """dir(self.module) should at least contain everything in __all__."""
         module_all_set = set(self.module.__all__)
@@ -1929,16 +1927,14 @@ class ExtensionBuiltTest(unittest.TestCase):
     rely on these tests as an indication of stable properties of these classes.
     """
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_cache_location(self):
         # The pure Python version stores caches on attributes, but the C
         # extension stores them in C globals (at least for now)
         self.assertFalse(hasattr(c_zoneinfo.ZoneInfo, "_weak_cache"))
         self.assertTrue(hasattr(py_zoneinfo.ZoneInfo, "_weak_cache"))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_gc_tracked(self):
         import gc
 

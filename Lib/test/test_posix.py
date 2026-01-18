@@ -1350,7 +1350,7 @@ class PosixTester(unittest.TestCase):
         param = posix.sched_param(sched_priority=-large)
         self.assertRaises(OverflowError, posix.sched_setparam, 0, param)
 
-    @unittest.expectedFailureIf(sys.platform == 'linux', "TODO: RUSTPYTHON; TypeError: cannot pickle 'sched_param' object")
+    @unittest.expectedFailureIf(sys.platform == 'linux', 'TODO: RUSTPYTHON; TypeError: cannot pickle "sched_param" object')
     @requires_sched
     def test_sched_param(self):
         param = posix.sched_param(1)

@@ -730,8 +730,7 @@ class BZ2FileTest(BaseTest):
             self.assertEqual(f.read(), self.DATA)
             self.assertEqual(f.name, str_filename)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def testOpenPathLikeFilename(self):
         filename = FakePath(self.filename)
         with BZ2File(filename, "wb") as f:
@@ -1190,8 +1189,7 @@ class OpenTest(BaseTest):
                 as f:
             self.assertEqual(f.read(), "foobar")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_newline(self):
         # Test with explicit newline (universal newline mode disabled).
         text = self.TEXT.decode("ascii")

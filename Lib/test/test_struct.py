@@ -360,8 +360,7 @@ class StructTest(unittest.TestCase):
             (got,) = struct.unpack(code, got)
             self.assertEqual(got, expectedback)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_705836(self):
         # SF bug 705836.  "<f" and ">f" had a severe rounding bug, where a carry
         # from the low-order discarded bits could propagate into the exponent
@@ -670,8 +669,7 @@ class StructTest(unittest.TestCase):
         s2 = struct.Struct(s.format.encode())
         self.assertEqual(s2.format, s.format)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_struct_cleans_up_at_runtime_shutdown(self):
         code = """if 1:
             import struct
@@ -777,8 +775,7 @@ class StructTest(unittest.TestCase):
         test_error_propagation('N')
         test_error_propagation('n')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_struct_subclass_instantiation(self):
         # Regression test for https://github.com/python/cpython/issues/112358
         class MyStruct(struct.Struct):

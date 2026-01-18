@@ -9,8 +9,7 @@ class TestExceptionGroupTypeHierarchy(unittest.TestCase):
         self.assertTrue(issubclass(ExceptionGroup, BaseExceptionGroup))
         self.assertTrue(issubclass(BaseExceptionGroup, BaseException))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_exception_is_not_generic_type(self):
         with self.assertRaisesRegex(TypeError, 'Exception'):
             Exception[OSError]
@@ -22,8 +21,7 @@ class TestExceptionGroupTypeHierarchy(unittest.TestCase):
 
 
 class BadConstructorArgs(unittest.TestCase):
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_bad_EG_construction__too_many_args(self):
         MSG = r'BaseExceptionGroup.__new__\(\) takes exactly 2 arguments'
         with self.assertRaisesRegex(TypeError, MSG):

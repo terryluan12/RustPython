@@ -25,8 +25,7 @@ class FinderTests(abc.FinderTests):
 
         return importer.find_spec(fullname)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_module(self):
         self.assertTrue(self.find_spec(util.EXTENSIONS.name))
 

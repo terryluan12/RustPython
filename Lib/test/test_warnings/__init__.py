@@ -494,8 +494,7 @@ class WarnTests(BaseTest):
                 self.assertEqual(os.path.basename(w[-1].filename),
                                     "<sys>")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_stacklevel_import(self):
         # Issue #24305: With stacklevel=2, module-level warnings should work.
         import_helper.unload('test.test_warnings.data.import_warning')
@@ -734,51 +733,42 @@ class WarnTests(BaseTest):
 class CWarnTests(WarnTests, unittest.TestCase):
     module = c_warnings
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     # As an early adopter, we sanity check the
     # test.import_helper.import_fresh_module utility function
     def test_accelerated(self):
         self.assertIsNot(original_warnings, self.module)
         self.assertFalse(hasattr(self.module.warn, '__code__'))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_gh86298_no_loader_and_spec_is_none(self):
         return super().test_gh86298_no_loader_and_spec_is_none()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_gh86298_loader_is_none_and_spec_is_none(self):
         return super().test_gh86298_loader_is_none_and_spec_is_none()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_gh86298_loader_is_none_and_spec_loader_is_none(self):
         return super().test_gh86298_loader_is_none_and_spec_loader_is_none()
     
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_gh86298_no_spec(self):
         return super().test_gh86298_no_spec()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_gh86298_spec_is_none(self):
         return super().test_gh86298_spec_is_none()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_gh86298_no_spec_loader(self):
         return super().test_gh86298_no_spec_loader()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_gh86298_loader_and_spec_loader_disagree(self):
         return super().test_gh86298_loader_and_spec_loader_disagree()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_gh86298_no_loader_and_no_spec_loader(self):
         return super().test_gh86298_no_loader_and_no_spec_loader()
 
@@ -857,8 +847,7 @@ class _WarningsTests(BaseTest, unittest.TestCase):
 
     module = c_warnings
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_filter(self):
         # Everything should function even if 'filters' is not in warnings.
         with original_warnings.catch_warnings(module=self.module) as w:
@@ -869,8 +858,7 @@ class _WarningsTests(BaseTest, unittest.TestCase):
             self.assertRaises(UserWarning, self.module.warn,
                                 'convert to error')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_onceregistry(self):
         # Replacing or removing the onceregistry should be okay.
         global __warningregistry__
@@ -901,8 +889,7 @@ class _WarningsTests(BaseTest, unittest.TestCase):
         finally:
             self.module.onceregistry = original_registry
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_default_action(self):
         # Replacing or removing defaultaction should be okay.
         message = UserWarning("defaultaction test")
@@ -951,8 +938,7 @@ class _WarningsTests(BaseTest, unittest.TestCase):
                 result = stream.getvalue()
         self.assertIn(text, result)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_showwarnmsg_missing(self):
         # Test that _showwarnmsg() missing is okay.
         text = 'del _showwarnmsg test'
@@ -1001,8 +987,7 @@ class _WarningsTests(BaseTest, unittest.TestCase):
         assert expected_line
         self.assertEqual(second_line, expected_line)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_filename_none(self):
         # issue #12467: race condition if a warning is emitted at shutdown
         globals_dict = globals()
@@ -1027,8 +1012,7 @@ class _WarningsTests(BaseTest, unittest.TestCase):
         self.assertNotIn(b'Warning!', stderr)
         self.assertNotIn(b'Error', stderr)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_issue31285(self):
         # warn_explicit() should neither raise a SystemError nor cause an
         # assertion failure, in case the return value of get_source() has a
@@ -1181,8 +1165,7 @@ class CWarningsDisplayTests(WarningsDisplayTests, unittest.TestCase):
 class PyWarningsDisplayTests(WarningsDisplayTests, unittest.TestCase):
     module = py_warnings
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_tracemalloc(self):
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
 
@@ -1385,8 +1368,7 @@ class PyCatchWarningTests(CatchWarningTests, unittest.TestCase):
 
 class EnvironmentVariableTests(BaseTest):
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_single_warning(self):
         rc, stdout, stderr = assert_python_ok("-c",
             "import sys; sys.stdout.write(str(sys.warnoptions))",
@@ -1394,8 +1376,7 @@ class EnvironmentVariableTests(BaseTest):
             PYTHONDEVMODE="")
         self.assertEqual(stdout, b"['ignore::DeprecationWarning']")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_comma_separated_warnings(self):
         rc, stdout, stderr = assert_python_ok("-c",
             "import sys; sys.stdout.write(str(sys.warnoptions))",
@@ -1404,8 +1385,7 @@ class EnvironmentVariableTests(BaseTest):
         self.assertEqual(stdout,
             b"['ignore::DeprecationWarning', 'ignore::UnicodeWarning']")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @force_not_colorized
     def test_envvar_and_command_line(self):
         rc, stdout, stderr = assert_python_ok("-Wignore::UnicodeWarning", "-c",
@@ -1415,8 +1395,7 @@ class EnvironmentVariableTests(BaseTest):
         self.assertEqual(stdout,
             b"['ignore::DeprecationWarning', 'ignore::UnicodeWarning']")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @force_not_colorized
     def test_conflicting_envvar_and_command_line(self):
         rc, stdout, stderr = assert_python_failure("-Werror::DeprecationWarning", "-c",
@@ -1466,8 +1445,7 @@ class EnvironmentVariableTests(BaseTest):
         self.assertEqual(stdout_lines, expected_output)
 
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipUnless(sys.getfilesystemencoding() != 'ascii',
                          'requires non-ascii filesystemencoding')
     def test_nonascii(self):
@@ -1482,8 +1460,7 @@ class EnvironmentVariableTests(BaseTest):
 class CEnvironmentVariableTests(EnvironmentVariableTests, unittest.TestCase):
     module = c_warnings
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_default_filter_configuration(self):
         # XXX: RUSTPYHTON; remove the entire function when fixed
         super().test_default_filter_configuration()
@@ -1547,8 +1524,7 @@ class BootstrapTest(unittest.TestCase):
 
 
 class FinalizationTest(unittest.TestCase):
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_finalization(self):
         # Issue #19421: warnings.warn() should not crash
         # during Python finalization
@@ -1566,8 +1542,7 @@ a=A()
         self.assertEqual(err.decode().rstrip(),
                          '<string>:7: UserWarning: test')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_late_resource_warning(self):
         # Issue #21925: Emitting a ResourceWarning late during the Python
         # shutdown must be logged.

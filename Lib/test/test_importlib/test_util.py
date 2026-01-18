@@ -358,8 +358,7 @@ class PEP3147Tests:
         self.assertEqual(self.util.cache_from_source(path, optimization=''),
                          expect)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_cache_from_source_debug_override(self):
         # Given the path to a .py file, return the path to its PEP 3147/PEP 488
         # defined .pyc file (i.e. under __pycache__).

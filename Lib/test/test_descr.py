@@ -5193,7 +5193,7 @@ class AAAPTypesLongInitTest(unittest.TestCase):
 
 
 class MiscTests(unittest.TestCase):
-    @unittest.skip("TODO: RUSTPYTHON; rustpython panicked at 'dict has non-string keys: [PyObject PyBaseObject]'")
+    @unittest.skip('TODO: RUSTPYTHON; rustpython panicked at "dict has non-string keys: [PyObject PyBaseObject]"')
     def test_type_lookup_mro_reference(self):
         # Issue #14199: _PyType_Lookup() has to keep a strong reference to
         # the type MRO because it may be modified during the lookup, if

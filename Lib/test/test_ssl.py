@@ -376,7 +376,7 @@ class BasicSocketTests(unittest.TestCase):
                 value = getattr(ssl, name)
                 self.assertGreaterEqual(value, 0, f"ssl.{name}")
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_ssl_types(self):
         ssl_types = [
             _ssl._SSLContext,
@@ -611,7 +611,7 @@ class BasicSocketTests(unittest.TestCase):
             with test_wrap_socket(s) as ss:
                 self.assertEqual(timeout, ss.gettimeout())
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_openssl111_deprecations(self):
         options = [
             ssl.OP_NO_TLSv1,
@@ -716,7 +716,7 @@ class BasicSocketTests(unittest.TestCase):
         with test_wrap_socket(s, server_side=True, certfile=CERTFILE) as ss:
             self.assertIsNone(ss.get_channel_binding("tls-unique"))
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_dealloc_warn(self):
         ss = test_wrap_socket(socket.socket(socket.AF_INET))
         r = repr(ss)
@@ -1062,7 +1062,7 @@ class ContextTests(unittest.TestCase):
             with self.assertRaises(AttributeError):
                 ctx.hostname_checks_common_name = True
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @ignore_deprecation
     def test_min_max_version(self):
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -1438,7 +1438,7 @@ class ContextTests(unittest.TestCase):
         ctx.set_servername_callback(None)
         ctx.set_servername_callback(dummycallback)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_sni_callback_refcycle(self):
         # Reference cycles through the servername callback are detected
         # and cleared.
@@ -2891,7 +2891,7 @@ class ThreadedTests(unittest.TestCase):
                 'Cannot create a client socket with a PROTOCOL_TLS_SERVER context',
                 str(e.exception))
 
-    @unittest.skip('TODO: RUSTPYTHON flaky')
+    @unittest.skip('TODO: RUSTPYTHON; flaky')
     @unittest.skipUnless(support.Py_GIL_DISABLED, "test is only useful if the GIL is disabled")
     def test_ssl_in_multiple_threads(self):
         # See GH-124984: OpenSSL is not thread safe.
@@ -4024,7 +4024,7 @@ class ThreadedTests(unittest.TestCase):
                 s.connect((HOST, server.port))
                 self.assertIn("ECDH", s.cipher()[0])
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipUnless("tls-unique" in ssl.CHANNEL_BINDING_TYPES,
                          "'tls-unique' channel binding not available")
     def test_tls_unique_channel_binding(self):
@@ -4287,7 +4287,7 @@ class ThreadedTests(unittest.TestCase):
         self.check_common_name(stats, SIGNED_CERTFILE_HOSTNAME)
         self.assertEqual(calls, [])
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_sni_callback_alert(self):
         # Returning a TLS alert is reflected to the connecting client
         server_context, other_context, client_context = self.sni_contexts()
@@ -4301,7 +4301,7 @@ class ThreadedTests(unittest.TestCase):
                                        sni_name='supermessage')
         self.assertEqual(cm.exception.reason, 'TLSV1_ALERT_ACCESS_DENIED')
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_sni_callback_raising(self):
         # Raising fails the connection with a TLS handshake failure alert.
         server_context, other_context, client_context = self.sni_contexts()
@@ -4321,7 +4321,7 @@ class ThreadedTests(unittest.TestCase):
             self.assertRegex(cm.exception.reason, regex)
             self.assertEqual(catch.unraisable.exc_type, ZeroDivisionError)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_sni_callback_wrong_return_type(self):
         # Returning the wrong return type terminates the TLS connection
         # with an internal error alert.
@@ -4387,7 +4387,7 @@ class ThreadedTests(unittest.TestCase):
                     s.sendfile(file)
                     self.assertEqual(s.recv(1024), TEST_DATA)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_session(self):
         client_context, server_context, hostname = testing_context()
         # TODO: sessions aren't compatible with TLSv1.3 yet
@@ -4445,7 +4445,7 @@ class ThreadedTests(unittest.TestCase):
         self.assertEqual(sess_stat['accept'], 4)
         self.assertEqual(sess_stat['hits'], 2)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_session_handling(self):
         client_context, server_context, hostname = testing_context()
         client_context2, _, _ = testing_context()
@@ -4597,7 +4597,7 @@ class ThreadedTests(unittest.TestCase):
             with client_context.wrap_socket(socket.socket()) as s:
                 s.connect((HOST, server.port))
 
-    @unittest.skip("TODO: RUSTPYTHON; Hangs")
+    @unittest.skip('TODO: RUSTPYTHON; Hangs')
     def test_thread_recv_while_main_thread_sends(self):
         # GH-137583: Locking was added to calls to send() and recv() on SSL
         # socket objects. This seemed fine at the surface level because those
@@ -4661,7 +4661,7 @@ class TestPostHandshakeAuth(unittest.TestCase):
             self.assertEqual(ctx.verify_mode, ssl.CERT_OPTIONAL)
             self.assertEqual(ctx.post_handshake_auth, True)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_pha_required(self):
         client_context, server_context, hostname = testing_context()
         server_context.post_handshake_auth = True
@@ -4687,7 +4687,7 @@ class TestPostHandshakeAuth(unittest.TestCase):
                 cert_text = s.recv(4096).decode('us-ascii')
                 self.assertIn('Python Software Foundation CA', cert_text)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_pha_required_nocert(self):
         client_context, server_context, hostname = testing_context()
         server_context.post_handshake_auth = True
@@ -4729,7 +4729,7 @@ class TestPostHandshakeAuth(unittest.TestCase):
                     # receive alert
                     s.recv(1024)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_pha_optional(self):
         if support.verbose:
             sys.stdout.write("\n")
@@ -4754,7 +4754,7 @@ class TestPostHandshakeAuth(unittest.TestCase):
                 s.write(b'HASCERT')
                 self.assertEqual(s.recv(1024), b'TRUE\n')
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_pha_optional_nocert(self):
         if support.verbose:
             sys.stdout.write("\n")
@@ -4777,7 +4777,7 @@ class TestPostHandshakeAuth(unittest.TestCase):
                 s.write(b'HASCERT')
                 self.assertEqual(s.recv(1024), b'FALSE\n')
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_pha_no_pha_client(self):
         client_context, server_context, hostname = testing_context()
         server_context.post_handshake_auth = True
@@ -4794,7 +4794,7 @@ class TestPostHandshakeAuth(unittest.TestCase):
                 s.write(b'PHA')
                 self.assertIn(b'extension not received', s.recv(1024))
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_pha_no_pha_server(self):
         # server doesn't have PHA enabled, cert is requested in handshake
         client_context, server_context, hostname = testing_context()
@@ -4832,7 +4832,7 @@ class TestPostHandshakeAuth(unittest.TestCase):
                 s.write(b'PHA')
                 self.assertIn(b'WRONG_SSL_VERSION', s.recv(1024))
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_bpo37428_pha_cert_none(self):
         # verify that post_handshake_auth does not implicitly enable cert
         # validation.
@@ -5070,7 +5070,7 @@ class TestSSLDebug(unittest.TestCase):
         with self.assertRaises(TypeError):
             client_context._msg_callback = object()
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_msg_callback_tls12(self):
         client_context, server_context, hostname = testing_context()
         client_context.maximum_version = ssl.TLSVersion.TLSv1_2

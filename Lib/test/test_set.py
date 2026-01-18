@@ -318,8 +318,7 @@ class TestJointOps:
             name = repr(s).partition('(')[0]    # strip class name
             self.assertEqual(repr(s), '%s({%s(...)})' % (name, name))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_do_not_rehash_dict_keys(self):
         n = 10
         d = dict.fromkeys(map(HashCountingInt, range(n)))
@@ -339,8 +338,7 @@ class TestJointOps:
         self.assertEqual(sum(elem.hash_count for elem in d), n)
         self.assertEqual(d3, dict.fromkeys(d, 123))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_container_iterator(self):
         # Bug #3680: tp_traverse was not implemented for set iterator object
         class C(object):
@@ -353,8 +351,7 @@ class TestJointOps:
         gc.collect()
         self.assertTrue(ref() is None, "Cycle was not collected")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, self.thetype)
 
@@ -1809,7 +1806,7 @@ class TestOperationsMutating:
                 self.assertIn("changed size during iteration", str(e))
 
 
-@unittest.skip("TODO: RUSTPYTHON; segfault")
+@unittest.skip('TODO: RUSTPYTHON; segfault')
 class TestBinaryOpsMutating(TestOperationsMutating):
 
     def test_eq_with_mutation(self):
@@ -1898,7 +1895,7 @@ class TestBinaryOpsMutating_Subclass_Set(TestBinaryOpsMutating, unittest.TestCas
     constructor2 = set
 
 
-@unittest.skip("TODO: RUSTPYTHON; segfault")
+@unittest.skip('TODO: RUSTPYTHON; segfault')
 class TestMethodsMutating(TestOperationsMutating):
 
     def test_issubset_with_mutation(self):

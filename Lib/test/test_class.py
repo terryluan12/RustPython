@@ -554,7 +554,7 @@ class ClassTests(unittest.TestCase):
         self.assertFalse(hasattr(o, "__call__"))
         self.assertFalse(hasattr(c, "__call__"))
 
-    @unittest.skip("TODO: RUSTPYTHON, segmentation fault")
+    @unittest.skip('TODO: RUSTPYTHON; segmentation fault')
     def testSFBug532646(self):
         # Test for SF bug 532646
 
@@ -570,8 +570,7 @@ class ClassTests(unittest.TestCase):
         else:
             self.fail("Failed to raise RecursionError")
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def testForExceptionsRaisedInInstanceGetattr2(self):
         # Tests for exceptions raised in instance_getattr2().
 
@@ -688,8 +687,7 @@ class ClassTests(unittest.TestCase):
         with self.assertRaisesRegex(AttributeError, error_msg):
             del A.x
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def testObjectAttributeAccessErrorMessages(self):
         class A:
             pass
@@ -739,8 +737,7 @@ class ClassTests(unittest.TestCase):
         with self.assertRaisesRegex(AttributeError, error_msg):
             del B().z
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def testConstructorErrorMessages(self):
         # bpo-31506: Improves the error message logic for object_new & object_init
 
@@ -867,36 +864,31 @@ class WithAttrs:
 
 class TestInlineValues(unittest.TestCase):
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_flags(self):
         self.assertEqual(Plain.__flags__ & Py_TPFLAGS_MANAGED_DICT, Py_TPFLAGS_MANAGED_DICT)
         self.assertEqual(WithAttrs.__flags__ & Py_TPFLAGS_MANAGED_DICT, Py_TPFLAGS_MANAGED_DICT)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_has_inline_values(self):
         c = Plain()
         self.assertTrue(has_inline_values(c))
         del c.__dict__
         self.assertFalse(has_inline_values(c))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_instances(self):
         self.assertTrue(has_inline_values(Plain()))
         self.assertTrue(has_inline_values(WithAttrs()))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_inspect_dict(self):
         for cls in (Plain, WithAttrs):
             c = cls()
             c.__dict__
             self.assertTrue(has_inline_values(c))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_update_dict(self):
         d = { "e": 5, "f": 6 }
         for cls in (Plain, WithAttrs):
@@ -913,8 +905,7 @@ class TestInlineValues(unittest.TestCase):
         for i in range(100):
             self.assertEqual(getattr(obj, f"a{i}"), i)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_many_attributes(self):
         class C: pass
         c = C()
@@ -925,8 +916,7 @@ class TestInlineValues(unittest.TestCase):
         c = C()
         self.assertTrue(has_inline_values(c))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_many_attributes_with_dict(self):
         class C: pass
         c = C()
@@ -947,8 +937,7 @@ class TestInlineValues(unittest.TestCase):
         obj.foo = None # Aborted here
         self.assertEqual(obj.__dict__, {"foo":None})
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_store_attr_deleted_dict(self):
         class Foo:
             pass
@@ -958,8 +947,7 @@ class TestInlineValues(unittest.TestCase):
         f.a = 3
         self.assertEqual(f.a, 3)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_rematerialize_object_dict(self):
         # gh-121860: rematerializing an object's managed dictionary after it
         # had been deleted caused a crash.
@@ -978,7 +966,7 @@ class TestInlineValues(unittest.TestCase):
         self.assertIsInstance(f, Bar)
         self.assertEqual(f.__dict__, {})
 
-    @unittest.skip("TODO: RUSTPYTHON, unexpectedly long runtime")
+    @unittest.skip('TODO: RUSTPYTHON; unexpectedly long runtime')
     def test_store_attr_type_cache(self):
         """Verifies that the type cache doesn't provide a value which  is
         inconsistent from the dict."""

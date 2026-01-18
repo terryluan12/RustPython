@@ -1164,8 +1164,7 @@ class ThreadTests(BaseTestCase):
         self.assertEqual(out, b'')
         self.assertEqual(err, b'')
 
-    # TODO: RUSTPYTHON - __del__ not called during interpreter finalization (no cyclic GC)
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; __del__ not called during interpreter finalization (no cyclic GC)
     def test_start_new_thread_at_finalization(self):
         code = """if 1:
             import _thread
@@ -1475,8 +1474,7 @@ class ThreadJoinOnShutdown(BaseTestCase):
         self.assertEqual(out.strip(), b"OK")
         self.assertEqual(rc, 0)
 
-    # TODO: RUSTPYTHON - parking_lot mutex not fork-safe, child may SIGSEGV
-    @unittest.skip("TODO: RUSTPYTHON - flaky, parking_lot mutex not fork-safe")
+    @unittest.skip('TODO: RUSTPYTHON; parking_lot mutex not fork-safe, child may SIGSEGV')
     @skip_unless_reliable_fork
     def test_reinit_tls_after_fork(self):
         # Issue #13817: fork() would deadlock in a multithreaded program with

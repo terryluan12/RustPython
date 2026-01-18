@@ -206,7 +206,7 @@ class SysModuleTest(unittest.TestCase):
     def tearDown(self):
         test.support.reap_children()
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_exit(self):
         # call with two arguments
         self.assertRaises(TypeError, sys.exit, 42, 42)
@@ -921,7 +921,7 @@ class SysModuleTest(unittest.TestCase):
     def test_clear_type_cache(self):
         sys._clear_type_cache()
 
-    @unittest.skip("TODO: RUSTPYTHON; cp424 encoding not supported, causes panic")
+    @unittest.skip('TODO: RUSTPYTHON; cp424 encoding not supported, causes panic')
     @force_not_colorized
     @support.requires_subprocess()
     def test_ioencoding(self):

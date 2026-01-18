@@ -155,8 +155,7 @@ class TimeTestCase(unittest.TestCase):
         self.assertRaises(ValueError, time.sleep, -1)
         time.sleep(1.2)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_strftime(self):
         tt = time.gmtime(self.t)
         for directive in ('a', 'A', 'b', 'B', 'c', 'd', 'H', 'I',
@@ -229,8 +228,7 @@ class TimeTestCase(unittest.TestCase):
         self.assertRaises(ValueError, func,
                             (1900, 1, 1, 0, 0, 0, 0, 367, -1))
 
-    # TODO: RUSTPYTHON, ValueError: invalid struct_time parameter
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; ValueError: invalid struct_time parameter
     def test_strftime_bounding_check(self):
         self._bounds_checking(lambda tup: time.strftime('', tup))
 
@@ -247,8 +245,7 @@ class TimeTestCase(unittest.TestCase):
                     except ValueError:
                         pass
 
-    # TODO: RUSTPYTHON, ValueError: invalid struct_time parameter
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; ValueError: invalid struct_time parameter
     def test_default_values_for_zero(self):
         # Make sure that using all zeros uses the proper default
         # values.  No test for daylight savings since strftime() does
@@ -259,8 +256,7 @@ class TimeTestCase(unittest.TestCase):
             result = time.strftime("%Y %m %d %H %M %S %w %j", (2000,)+(0,)*8)
         self.assertEqual(expected, result)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @skip_if_buggy_ucrt_strfptime
     def test_strptime(self):
         # Should be able to go round-trip from strftime to strptime without
@@ -292,8 +288,7 @@ class TimeTestCase(unittest.TestCase):
             time.strptime('19', '%Y %')
         self.assertIs(e.exception.__suppress_context__, True)
 
-    # TODO: RUSTPYTHON, ValueError: invalid struct_time parameter
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; ValueError: invalid struct_time parameter
     def test_asctime(self):
         time.asctime(time.gmtime(self.t))
 
@@ -309,13 +304,11 @@ class TimeTestCase(unittest.TestCase):
         self.assertRaises(TypeError, time.asctime, ())
         self.assertRaises(TypeError, time.asctime, (0,) * 10)
 
-    # TODO: RUSTPYTHON, ValueError: invalid struct_time parameter
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; ValueError: invalid struct_time parameter
     def test_asctime_bounding_check(self):
         self._bounds_checking(time.asctime)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_ctime(self):
         t = time.mktime((1973, 9, 16, 1, 3, 52, 0, 0, -1))
         self.assertEqual(time.ctime(t), 'Sun Sep 16 01:03:52 1973')
@@ -415,8 +408,7 @@ class TimeTestCase(unittest.TestCase):
             for unreasonable in -1e200, 1e200:
                 self.assertRaises(OverflowError, func, unreasonable)
 
-    # TODO: RUSTPYTHON, TypeError: unexpected type NoneType
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; TypeError: unexpected type NoneType
     def test_ctime_without_arg(self):
         # Not sure how to check the values, since the clock could tick
         # at any time.  Make sure these are at least accepted and
@@ -424,8 +416,7 @@ class TimeTestCase(unittest.TestCase):
         time.ctime()
         time.ctime(None)
 
-    # TODO: RUSTPYTHON, TypeError: unexpected type NoneType
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; TypeError: unexpected type NoneType
     def test_gmtime_without_arg(self):
         gt0 = time.gmtime()
         gt1 = time.gmtime(None)
@@ -433,8 +424,7 @@ class TimeTestCase(unittest.TestCase):
         t1 = time.mktime(gt1)
         self.assertAlmostEqual(t1, t0, delta=0.2)
 
-    # TODO: RUSTPYTHON, TypeError: unexpected type NoneType
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; TypeError: unexpected type NoneType
     def test_localtime_without_arg(self):
         lt0 = time.localtime()
         lt1 = time.localtime(None)
@@ -469,8 +459,7 @@ class TimeTestCase(unittest.TestCase):
             pass
         self.assertEqual(time.strftime('%Z', tt), tzname)
 
-    # TODO: RUSTPYTHON
-    @unittest.skipIf(sys.platform == "win32", "Implement get_clock_info for Windows.")
+    @unittest.skipIf(sys.platform == "win32", 'TODO: RUSTPYTHON; Implement get_clock_info for Windows.')
     def test_monotonic(self):
         # monotonic() should not go backward
         times = [time.monotonic() for n in range(100)]
@@ -613,8 +602,7 @@ class _TestAsctimeYear:
     def yearstr(self, y):
         return time.asctime((y,) + (0,) * 8).split()[-1]
 
-    # TODO: RUSTPYTHON, ValueError: invalid struct_time parameter
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; ValueError: invalid struct_time parameter
     def test_large_year(self):
         # Check that it doesn't crash for year > 9999
         self.assertEqual(self.yearstr(12345), '12345')
@@ -670,8 +658,7 @@ class _TestStrftimeYear:
 class _Test4dYear:
     _format = '%d'
 
-    # TODO: RUSTPYTHON, ValueError: invalid struct_time parameter
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; ValueError: invalid struct_time parameter
     def test_year(self, fmt=None, func=None):
         fmt = fmt or self._format
         func = func or self.yearstr
@@ -688,8 +675,7 @@ class _Test4dYear:
         self.assertEqual(self.yearstr(TIME_MAXYEAR).lstrip('+'), str(TIME_MAXYEAR))
         self.assertRaises(OverflowError, self.yearstr, TIME_MAXYEAR + 1)
 
-    # TODO: RUSTPYTHON, ValueError: invalid struct_time parameter
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; ValueError: invalid struct_time parameter
     def test_negative(self):
         self.assertEqual(self.yearstr(-1), self._format % -1)
         self.assertEqual(self.yearstr(-1234), '-1234')
@@ -711,8 +697,7 @@ class TestAsctime4dyear(_TestAsctimeYear, _Test4dYear, unittest.TestCase):
 
 
 class TestPytime(unittest.TestCase):
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @skip_if_buggy_ucrt_strfptime
     @unittest.skipUnless(time._STRUCT_TM_ITEMS == 11, "needs tm_zone support")
     def test_localtime_timezone(self):
@@ -749,8 +734,7 @@ class TestPytime(unittest.TestCase):
         self.assertEqual(new_lt.tm_gmtoff, lt.tm_gmtoff)
         self.assertEqual(new_lt9.tm_zone, lt.tm_zone)
     
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipUnless(time._STRUCT_TM_ITEMS == 11, "needs tm_zone support")
     def test_strptime_timezone(self):
         t = time.strptime("UTC", "%Z")
@@ -758,8 +742,7 @@ class TestPytime(unittest.TestCase):
         t = time.strptime("+0500", "%z")
         self.assertEqual(t.tm_gmtoff, 5 * 3600)
     
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipUnless(time._STRUCT_TM_ITEMS == 11, "needs tm_zone support")
     def test_short_times(self):
 

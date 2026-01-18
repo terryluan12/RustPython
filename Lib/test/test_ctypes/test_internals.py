@@ -27,8 +27,7 @@ class ObjectsTestCase(unittest.TestCase):
         self.assertEqual(refcnt, sys.getrefcount(i))
         self.assertEqual(ci._objects, None)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_c_char_p(self):
         s = "Hello, World".encode("ascii")
         refcnt = sys.getrefcount(s)
@@ -64,8 +63,7 @@ class ObjectsTestCase(unittest.TestCase):
         x1.a, x2.b = 42, 93
         self.assertEqual(y._objects, {"0": {}, "1": {}})
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_xxx(self):
         class X(Structure):
             _fields_ = [("a", c_char_p), ("b", c_char_p)]

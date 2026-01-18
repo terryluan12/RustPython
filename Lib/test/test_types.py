@@ -595,22 +595,21 @@ class TypesTests(unittest.TestCase):
         self.assertGreater(object.__basicsize__, 0)
         self.assertGreater(tuple.__itemsize__, 0)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_slot_wrapper_types(self):
         self.assertIsInstance(object.__init__, types.WrapperDescriptorType)
         self.assertIsInstance(object.__str__, types.WrapperDescriptorType)
         self.assertIsInstance(object.__lt__, types.WrapperDescriptorType)
         self.assertIsInstance(int.__lt__, types.WrapperDescriptorType)
 
-    # TODO: RUSTPYTHON No signature found in builtin method __get__ of 'method_descriptor' objects.
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; No signature found in builtin method __get__ of 'method_descriptor' objects.
     def test_dunder_get_signature(self):
         sig = inspect.signature(object.__init__.__get__)
         self.assertEqual(list(sig.parameters), ["instance", "owner"])
         # gh-93021: Second parameter is optional
         self.assertIs(sig.parameters["owner"].default, None)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_method_wrapper_types(self):
         self.assertIsInstance(object().__init__, types.MethodWrapperType)
         self.assertIsInstance(object().__str__, types.MethodWrapperType)
@@ -941,8 +940,7 @@ class UnionTests(unittest.TestCase):
         assert repr(int | type(None)) == "int | None"
         assert repr(int | typing.GenericAlias(list, int)) == "int | list[int]"
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_or_type_operator_with_genericalias(self):
         a = list[int]
         b = list[str]
@@ -1197,8 +1195,7 @@ class MappingProxyTests(unittest.TestCase):
         self.assertEqual(view['key1'], 70)
         self.assertEqual(copy['key1'], 27)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_union(self):
         mapping = {'a': 0, 'b': 1, 'c': 2}
         view = self.mappingproxy(mapping)
@@ -1841,8 +1838,7 @@ class CoroutineTests(unittest.TestCase):
         foo = types.coroutine(foo)
         self.assertIs(aw, foo())
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_async_def(self):
         # Test that types.coroutine passes 'async def' coroutines
         # without modification
@@ -2099,8 +2095,7 @@ class CoroutineTests(unittest.TestCase):
         foo = types.coroutine(foo)
         self.assertIs(foo(), gencoro)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_genfunc(self):
         def gen(): yield
         self.assertIs(types.coroutine(gen), gen)

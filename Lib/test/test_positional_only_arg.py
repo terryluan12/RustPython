@@ -22,8 +22,7 @@ class PositionalOnlyTestCase(unittest.TestCase):
         with self.assertRaisesRegex(SyntaxError, regex):
             compile(codestr + "\n", "<test>", "single")
 
-    # TODO: RUSTPYTHON: wrong error message
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; wrong error message
     def test_invalid_syntax_errors(self):
         check_syntax_error(self, "def f(a, b = 5, /, c): pass", "non-default argument follows default argument")
         check_syntax_error(self, "def f(a = 5, b, /, c): pass", "non-default argument follows default argument")
@@ -45,8 +44,7 @@ class PositionalOnlyTestCase(unittest.TestCase):
         check_syntax_error(self, "def f(a, /, c, /, d, *, e): pass")
         check_syntax_error(self, "def f(a, *, c, /, d, e): pass")
 
-    # TODO: RUSTPYTHON: wrong error message
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; wrong error message
     def test_invalid_syntax_errors_async(self):
         check_syntax_error(self, "async def f(a, b = 5, /, c): pass", "non-default argument follows default argument")
         check_syntax_error(self, "async def f(a = 5, b, /, c): pass", "non-default argument follows default argument")
@@ -163,8 +161,7 @@ class PositionalOnlyTestCase(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, r"f\(\) takes from 2 to 3 positional arguments but 4 were given"):
             f(1, 2, 3, 4)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_positional_only_and_kwonlyargs_invalid_calls(self):
         def f(a, b, /, c, *, d, e):
             pass
@@ -236,8 +233,7 @@ class PositionalOnlyTestCase(unittest.TestCase):
         x = lambda a, b, /, : a + b
         self.assertEqual(x(1, 2), 3)
 
-    # TODO: RUSTPYTHON: wrong error message
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; wrong error message
     def test_invalid_syntax_lambda(self):
         check_syntax_error(self, "lambda a, b = 5, /, c: None", "non-default argument follows default argument")
         check_syntax_error(self, "lambda a = 5, b, /, c: None", "non-default argument follows default argument")
@@ -338,8 +334,7 @@ class PositionalOnlyTestCase(unittest.TestCase):
 
         self.assertEqual(f(42), (42, {}))
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_mangling(self):
         class X:
             def f(self, __a=42, /):
@@ -439,8 +434,7 @@ class PositionalOnlyTestCase(unittest.TestCase):
 
         self.assertEqual(C().method(), sentinel)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_annotations_constant_fold(self):
         def g():
             def f(x: not (int is int), /): ...

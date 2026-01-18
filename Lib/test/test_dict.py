@@ -369,8 +369,7 @@ class DictTest(unittest.TestCase):
                 self.assertNotEqual(d, d2)
                 self.assertEqual(len(d2), len(d) + 1)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_copy_maintains_tracking(self):
         class A:
             pass
@@ -883,8 +882,7 @@ class DictTest(unittest.TestCase):
                  'f': None, 'g': None, 'h': None}
         d = {}
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_container_iterator(self):
         # Bug #3680: tp_traverse was not implemented for dictiter and
         # dictview objects.
@@ -1312,16 +1310,14 @@ class DictTest(unittest.TestCase):
         d = {X(): 0, 1: 1}
         self.assertRaises(RuntimeError, d.update, other)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, dict)
         support.check_free_after_iterating(self, lambda d: iter(d.keys()), dict)
         support.check_free_after_iterating(self, lambda d: iter(d.values()), dict)
         support.check_free_after_iterating(self, lambda d: iter(d.items()), dict)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_equal_operator_modifying_operand(self):
         # test fix for seg fault reported in bpo-27945 part 3.
         class X():

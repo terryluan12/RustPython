@@ -15,8 +15,7 @@ class Test(unittest.TestCase):
     def tearDown(self):
         syslog.closelog()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_openlog(self):
         syslog.openlog('python')
         # Issue #6697.
@@ -43,8 +42,7 @@ class Test(unittest.TestCase):
         self.assertEqual(syslog.setlogmask(0), mask)
         self.assertEqual(syslog.setlogmask(oldmask), mask)
 
-    # TODO: RUSTPYTHON; AssertionError: 12 is not false
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: 12 is not false
     def test_log_mask(self):
         mask = syslog.LOG_UPTO(syslog.LOG_WARNING)
         self.assertTrue(mask & syslog.LOG_MASK(syslog.LOG_WARNING))

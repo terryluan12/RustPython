@@ -2183,7 +2183,7 @@ class ASTValidatorTests(unittest.TestCase):
         self.expr(ast.Yield(ast.Name("x", ast.Store())), "must have Load")
         self.expr(ast.YieldFrom(ast.Name("x", ast.Store())), "must have Load")
 
-    @unittest.skip("TODO: RUSTPYTHON; thread 'main' panicked")
+    @unittest.skip('TODO: RUSTPYTHON; thread "main" panicked')
     def test_compare(self):
         left = ast.Name("x", ast.Load())
         comp = ast.Compare(left, [ast.In()], [])

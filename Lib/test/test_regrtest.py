@@ -818,7 +818,7 @@ class BaseTestCase(unittest.TestCase):
 
 
 class CheckActualTests(BaseTestCase):
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_finds_expected_number_of_tests(self):
         """
         Check that regrtest appears to find the expected set of tests.
@@ -875,7 +875,7 @@ class ProgramsTestCase(BaseTestCase):
         output = self.run_python(args, env=env, isolated=isolated)
         self.check_output(output)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_script_regrtest(self):
         # Lib/test/regrtest.py
         script = os.path.join(self.testdir, 'regrtest.py')
@@ -883,28 +883,28 @@ class ProgramsTestCase(BaseTestCase):
         args = [*self.python_args, script, *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
-    @unittest.skip('TODO: RUSTPYTHON flaky')
+    @unittest.skip('TODO: RUSTPYTHON; flaky')
     def test_module_test(self):
         # -m test
         args = [*self.python_args, '-m', 'test',
                 *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_module_regrtest(self):
         # -m test.regrtest
         args = [*self.python_args, '-m', 'test.regrtest',
                 *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
-    @unittest.skip('TODO: RUSTPYTHON flaky')
+    @unittest.skip('TODO: RUSTPYTHON; flaky')
     def test_module_autotest(self):
         # -m test.autotest
         args = [*self.python_args, '-m', 'test.autotest',
                 *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
-    @unittest.skip('TODO: RUSTPYTHON flaky')
+    @unittest.skip('TODO: RUSTPYTHON; flaky')
     def test_module_from_test_autotest(self):
         # from test import autotest
         code = 'from test import autotest'
@@ -912,7 +912,7 @@ class ProgramsTestCase(BaseTestCase):
                 *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
-    @unittest.skip('TODO: RUSTPYTHON flaky')
+    @unittest.skip('TODO: RUSTPYTHON; flaky')
     def test_script_autotest(self):
         # Lib/test/autotest.py
         script = os.path.join(self.testdir, 'autotest.py')
@@ -1195,7 +1195,7 @@ class ArgsTestCase(BaseTestCase):
                 regex = ('10 slowest tests:\n')
                 self.check_line(output, regex)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_coverage(self):
         # test --coverage
         test = self.create_test('coverage')
@@ -1871,7 +1871,7 @@ class ArgsTestCase(BaseTestCase):
         self.assertRegex(output,
                          re.compile('%s timed out' % testname, re.MULTILINE))
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_unraisable_exc(self):
         # --fail-env-changed must catch unraisable exception.
         # The exception must be displayed even if sys.stderr is redirected.
@@ -2004,7 +2004,7 @@ class ArgsTestCase(BaseTestCase):
         for name in names:
             self.assertFalse(os.path.exists(name), name)
 
-    @unittest.skip('TODO: RUSTPYTHON flaky')
+    @unittest.skip('TODO: RUSTPYTHON; flaky')
     @unittest.skipIf(support.is_wasi,
                      'checking temp files is not implemented on WASI')
     def test_leak_tmp_file(self):
@@ -2156,11 +2156,11 @@ class ArgsTestCase(BaseTestCase):
     def test_random_seed(self):
         self._check_random_seed(run_workers=False)
 
-    @unittest.skip('TODO: RUSTPYTHON flaky')
+    @unittest.skip('TODO: RUSTPYTHON; flaky')
     def test_random_seed_workers(self):
         self._check_random_seed(run_workers=True)
 
-    @unittest.skip('TODO: RUSTPYTHON flaky')
+    @unittest.skip('TODO: RUSTPYTHON; flaky')
     def test_python_command(self):
         code = textwrap.dedent(r"""
             import sys
@@ -2328,7 +2328,7 @@ class ArgsTestCase(BaseTestCase):
             self.check_executed_tests(output, testname, stats=1, parallel=True)
             self.assertNotIn('SPAM SPAM SPAM', output)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_xml(self):
         code = textwrap.dedent(r"""
             import unittest
@@ -2366,7 +2366,7 @@ class ArgsTestCase(BaseTestCase):
         for out in testcase.iter('system-out'):
             self.assertEqual(out.text, r"abc \x1b def")
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_nonascii(self):
         code = textwrap.dedent(r"""
             import unittest

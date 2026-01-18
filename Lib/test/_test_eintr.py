@@ -152,7 +152,7 @@ class OSEINTRTest(EINTRBaseTest):
                 self.assertEqual(data, os.read(rd, len(data)))
             self.assertEqual(proc.wait(), 0)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON InterruptedError: [Errno 4] Interrupted system call
+    @unittest.expectedFailure # TODO: RUSTPYTHON; InterruptedError: [Errno 4] Interrupted system call
     def test_write(self):
         rd, wr = os.pipe()
         self.addCleanup(os.close, wr)
@@ -381,7 +381,7 @@ class SocketEINTRTest(EINTRBaseTest):
 class TimeEINTRTest(EINTRBaseTest):
     """ EINTR tests for the time module. """
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_sleep(self):
         t0 = time.monotonic()
         time.sleep(self.sleep_time)
@@ -444,7 +444,7 @@ class SignalEINTRTest(EINTRBaseTest):
 class SelectEINTRTest(EINTRBaseTest):
     """ EINTR tests for the select module. """
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_select(self):
         t0 = time.monotonic()
         select.select([], [], [], self.sleep_time)
@@ -452,7 +452,7 @@ class SelectEINTRTest(EINTRBaseTest):
         self.stop_alarm()
         self.check_elapsed_time(dt)
 
-    @unittest.skip('TODO: RUSTPYTHON timed out at the 10 minute mark')
+    @unittest.skip('TODO: RUSTPYTHON; timed out at the 10 minute mark')
     @unittest.skipIf(sys.platform == "darwin",
                      "poll may fail on macOS; see issue #28087")
     @unittest.skipUnless(hasattr(select, 'poll'), 'need select.poll')
@@ -534,14 +534,14 @@ class FCNTLEINTRTest(EINTRBaseTest):
                 self.check_elapsed_time(dt)
             proc.wait()
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON InterruptedError: [Errno 4] Interrupted system call
+    @unittest.expectedFailure # TODO: RUSTPYTHON; InterruptedError: [Errno 4] Interrupted system call
     # Issue 35633: See https://bugs.python.org/issue35633#msg333662
     # skip test rather than accept PermissionError from all platforms
     @unittest.skipIf(platform.system() == "AIX", "AIX returns PermissionError")
     def test_lockf(self):
         self._lock(fcntl.lockf, "lockf")
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON InterruptedError: [Errno 4] Interrupted system call
+    @unittest.expectedFailure # TODO: RUSTPYTHON; InterruptedError: [Errno 4] Interrupted system call
     def test_flock(self):
         self._lock(fcntl.flock, "flock")
 

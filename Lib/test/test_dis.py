@@ -1967,7 +1967,7 @@ class InstructionTests(InstructionTestCase):
             self.assertIn(name, opcode._specializations[baseopname])
             self.assertEqual(opcode.opmap[baseopname], baseopcode)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON - JUMP_BACKWARD/JUMP_FORWARD are placeholders
+    @unittest.expectedFailure # TODO: RUSTPYTHON; JUMP_BACKWARD/JUMP_FORWARD are placeholders
     def test_jump_target(self):
         # Non-jump instructions should return None
         instruction = Instruction(opname="NOP", opcode=dis.opmap["NOP"], arg=None, argval=None,
@@ -1993,7 +1993,7 @@ class InstructionTests(InstructionTestCase):
                                   positions=None)
         self.assertEqual(10 + 2 + 1*2 + 100*2, instruction.jump_target)
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON - JUMP_BACKWARD is a placeholder
+    @unittest.expectedFailure # TODO: RUSTPYTHON; JUMP_BACKWARD is a placeholder
     def test_argval_argrepr(self):
         def f(opcode, oparg, offset, *init_args):
             arg_resolver = dis.ArgResolver(*init_args)
@@ -2014,7 +2014,7 @@ class InstructionTests(InstructionTestCase):
         self.assertEqual(f(opcode.opmap["BINARY_OP"], 3, *args), (3, '<<'))
         self.assertEqual(f(opcode.opmap["CALL_INTRINSIC_1"], 2, *args), (2, 'INTRINSIC_IMPORT_STAR'))
 
-    @unittest.expectedFailure  # TODO: RUSTPYTHON - JUMP_BACKWARD is a placeholder
+    @unittest.expectedFailure # TODO: RUSTPYTHON; JUMP_BACKWARD is a placeholder
     def test_custom_arg_resolver(self):
         class MyArgResolver(dis.ArgResolver):
             def offset_from_jump_arg(self, op, arg, offset):

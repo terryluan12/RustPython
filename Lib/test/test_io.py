@@ -4275,8 +4275,7 @@ class CTextIOWrapperTest(TextIOWrapperTest):
     def test_pickling_subclass(self):
         return super().test_pickling_subclass()
 
-    # TODO: RUSTPYTHON; euc_jis_2004 encoding not supported
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; euc_jis_2004 encoding not supported
     def test_seek_with_encoder_state(self):
         return super().test_seek_with_encoder_state()
 
@@ -4293,8 +4292,7 @@ class PyTextIOWrapperTest(TextIOWrapperTest):
     def test_newlines(self):
         return super().test_newlines()
 
-    # TODO: RUSTPYTHON; euc_jis_2004 encoding not supported
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; euc_jis_2004 encoding not supported
     def test_seek_with_encoder_state(self):
         return super().test_seek_with_encoder_state()
 
@@ -4879,13 +4877,11 @@ class CMiscIOTest(MiscIOTest):
     def test_check_encoding_errors(self):
         return super().test_check_encoding_errors()
 
-    # TODO: RUSTPYTHON; ResourceWarning not triggered by _io.FileIO
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; ResourceWarning not triggered by _io.FileIO
     def test_warn_on_dealloc(self):
         return super().test_warn_on_dealloc()
 
-    # TODO: RUSTPYTHON; ResourceWarning not triggered by _io.FileIO
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; ResourceWarning not triggered by _io.FileIO
     def test_warn_on_dealloc_fd(self):
         return super().test_warn_on_dealloc_fd()
 
@@ -5141,13 +5137,13 @@ class SignalsTest(unittest.TestCase):
                 if e.errno != errno.EBADF:
                     raise
 
-    @unittest.skip("TODO: RUSTPYTHON thread 'main' (103833) panicked at crates/vm/src/stdlib/signal.rs:233:43: RefCell already borrowed")
+    @unittest.skip('TODO: RUSTPYTHON; thread "main" (103833) panicked at crates/vm/src/stdlib/signal.rs:233:43: RefCell already borrowed')
     @requires_alarm
     @support.requires_resource('walltime')
     def test_interrupted_write_retry_buffered(self):
         self.check_interrupted_write_retry(b"x", mode="wb")
 
-    @unittest.skip("TODO: RUSTPYTHON thread 'main' (103833) panicked at crates/vm/src/stdlib/signal.rs:233:43: RefCell already borrowed")
+    @unittest.skip('TODO: RUSTPYTHON; thread "main" (103833) panicked at crates/vm/src/stdlib/signal.rs:233:43: RefCell already borrowed')
     @requires_alarm
     @support.requires_resource('walltime')
     def test_interrupted_write_retry_text(self):
@@ -5157,9 +5153,9 @@ class SignalsTest(unittest.TestCase):
 class CSignalsTest(SignalsTest):
     io = io
 
-    @unittest.skip("TODO: RUSTPYTHON thread 'main' (103833) panicked at crates/vm/src/stdlib/signal.rs:233:43: RefCell already borrowed")
-    def test_interrupted_read_retry_buffered(self):  # TODO: RUSTPYTHON
-        return super().test_interrupted_read_retry_buffered()  # TODO: RUSTPYTHON
+    @unittest.skip('TODO: RUSTPYTHON; thread "main" (103833) panicked at crates/vm/src/stdlib/signal.rs:233:43: RefCell already borrowed')
+    def test_interrupted_read_retry_buffered(self):
+        return super().test_interrupted_read_retry_buffered()
 
 class PySignalsTest(SignalsTest):
     io = pyio

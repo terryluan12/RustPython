@@ -169,8 +169,7 @@ class ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertIs(operator.ne(1+1j, 2+2j), True)
         self.assertIs(operator.eq(1+1j, 2.0), False)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_richcompare_boundaries(self):
         def check(n, deltas, is_equal, imag = 0.0):
             for delta in deltas:
@@ -347,8 +346,7 @@ class ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_conjugate(self):
         self.assertClose(complex(5.3, 9.8).conjugate(), 5.3-9.8j)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_constructor(self):
         def check(z, x, y):
             self.assertIs(type(z), complex)

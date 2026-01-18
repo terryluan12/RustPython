@@ -638,8 +638,7 @@ class StrTest(unittest.TestCase, BaseStrTest):
         except MemoryError:
             pass # acceptable on 32-bit
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @bigmemtest(size=_4G // 4 + 5, memuse=ascii_char_size + ucs4_char_size + 4)
     def test_encode_utf32(self, size):
         try:
@@ -786,14 +785,12 @@ class BytesTest(unittest.TestCase, BaseStrTest):
     def test_swapcase(self, size):
         self._test_swapcase(size)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @bigmemtest(size=_2G, memuse=2)
     def test_isspace(self, size):
         super().test_isspace(size)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @bigmemtest(size=_2G, memuse=2)
     def test_istitle(self, size):
         super().test_istitle(size)
@@ -823,14 +820,12 @@ class BytearrayTest(unittest.TestCase, BaseStrTest):
     test_hash = None
     test_split_large = None
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @bigmemtest(size=_2G, memuse=2)
     def test_isspace(self, size):
         super().test_isspace(size)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @bigmemtest(size=_2G, memuse=2)
     def test_istitle(self, size):
         super().test_istitle(size)

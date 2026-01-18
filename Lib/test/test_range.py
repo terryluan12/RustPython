@@ -91,8 +91,7 @@ class RangeTest(unittest.TestCase):
         r = range(-sys.maxsize, sys.maxsize, 2)
         self.assertEqual(len(r), sys.maxsize)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_range_constructor_error_messages(self):
         with self.assertRaisesRegex(
                 TypeError,

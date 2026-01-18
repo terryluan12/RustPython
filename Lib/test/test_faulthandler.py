@@ -137,8 +137,7 @@ class FaultHandlerTests(unittest.TestCase):
         fatal_error = 'Windows fatal exception: %s' % name_regex
         self.check_error(code, line_number, fatal_error, **kw)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipIf(sys.platform.startswith('aix'),
                      "the first page of memory is a mapped read-only on AIX")
     def test_read_null(self):
@@ -162,8 +161,7 @@ class FaultHandlerTests(unittest.TestCase):
                 3,
                 'access violation')
 
-    # TODO: RUSTPYTHON, AssertionError: Regex didn't match
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AssertionError: Regex didn't match
     @skip_segfault_on_android
     def test_sigsegv(self):
         self.check_fatal_error("""
@@ -174,8 +172,7 @@ class FaultHandlerTests(unittest.TestCase):
             3,
             'Segmentation fault')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @skip_segfault_on_android
     def test_gc(self):
         # bpo-44466: Detect if the GC is running
@@ -212,8 +209,7 @@ class FaultHandlerTests(unittest.TestCase):
             function='__del__',
             garbage_collecting=True)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_fatal_error_c_thread(self):
         self.check_fatal_error("""
             import faulthandler
@@ -226,8 +222,7 @@ class FaultHandlerTests(unittest.TestCase):
             func='faulthandler_fatal_error_thread',
             py_fatal_error=True)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_sigabrt(self):
         self.check_fatal_error("""
             import faulthandler
@@ -237,8 +232,7 @@ class FaultHandlerTests(unittest.TestCase):
             3,
             'Aborted')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipIf(sys.platform == 'win32',
                      "SIGFPE cannot be caught on Windows")
     def test_sigfpe(self):
@@ -291,13 +285,11 @@ class FaultHandlerTests(unittest.TestCase):
                 func='_testcapi_fatal_error_impl',
                 py_fatal_error=True)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_fatal_error(self):
         self.check_fatal_error_func(False)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_fatal_error_without_gil(self):
         self.check_fatal_error_func(True)
 
@@ -316,8 +308,7 @@ class FaultHandlerTests(unittest.TestCase):
             '(?:Segmentation fault|Bus error)',
             other_regex='unable to raise a stack overflow')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @skip_segfault_on_android
     def test_gil_released(self):
         self.check_fatal_error("""
@@ -328,8 +319,7 @@ class FaultHandlerTests(unittest.TestCase):
             3,
             'Segmentation fault')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @skip_segfault_on_android
     def test_enable_file(self):
         with temporary_filename() as filename:
@@ -343,8 +333,7 @@ class FaultHandlerTests(unittest.TestCase):
                 'Segmentation fault',
                 filename=filename)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipIf(sys.platform == "win32",
                      "subprocess doesn't support pass_fds on Windows")
     @skip_segfault_on_android
@@ -361,8 +350,7 @@ class FaultHandlerTests(unittest.TestCase):
                 'Segmentation fault',
                 fd=fd)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @skip_segfault_on_android
     def test_enable_single_thread(self):
         self.check_fatal_error("""
@@ -389,8 +377,7 @@ class FaultHandlerTests(unittest.TestCase):
                      "%r is present in %r" % (not_expected, stderr))
         self.assertNotEqual(exitcode, 0)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @skip_segfault_on_android
     def test_dump_ext_modules(self):
         code = """
@@ -523,14 +510,12 @@ class FaultHandlerTests(unittest.TestCase):
     def test_dump_traceback(self):
         self.check_dump_traceback()
 
-    # TODO: RUSTPYTHON - binary file write needs different handling
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; binary file write needs different handling
     def test_dump_traceback_file(self):
         with temporary_filename() as filename:
             self.check_dump_traceback(filename=filename)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipIf(sys.platform == "win32",
                      "subprocess doesn't support pass_fds on Windows")
     def test_dump_traceback_fd(self):
@@ -622,13 +607,11 @@ class FaultHandlerTests(unittest.TestCase):
         self.assertRegex(output, regex)
         self.assertEqual(exitcode, 0)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_dump_traceback_threads(self):
         self.check_dump_traceback_threads(None)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_dump_traceback_threads_file(self):
         with temporary_filename() as filename:
             self.check_dump_traceback_threads(filename)
@@ -695,37 +678,31 @@ class FaultHandlerTests(unittest.TestCase):
             self.assertEqual(trace, '')
         self.assertEqual(exitcode, 0)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_dump_traceback_later(self):
         self.check_dump_traceback_later()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_dump_traceback_later_repeat(self):
         self.check_dump_traceback_later(repeat=True)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_dump_traceback_later_cancel(self):
         self.check_dump_traceback_later(cancel=True)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_dump_traceback_later_file(self):
         with temporary_filename() as filename:
             self.check_dump_traceback_later(filename=filename)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipIf(sys.platform == "win32",
                      "subprocess doesn't support pass_fds on Windows")
     def test_dump_traceback_later_fd(self):
         with tempfile.TemporaryFile('wb+') as fp:
             self.check_dump_traceback_later(fd=fp.fileno())
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @support.requires_resource('walltime')
     def test_dump_traceback_later_twice(self):
         self.check_dump_traceback_later(loops=2)
@@ -813,37 +790,31 @@ class FaultHandlerTests(unittest.TestCase):
         else:
             self.assertEqual(exitcode, 0)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_register(self):
         self.check_register()
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_unregister(self):
         self.check_register(unregister=True)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_register_file(self):
         with temporary_filename() as filename:
             self.check_register(filename=filename)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     @unittest.skipIf(sys.platform == "win32",
                      "subprocess doesn't support pass_fds on Windows")
     def test_register_fd(self):
         with tempfile.TemporaryFile('wb+') as fp:
             self.check_register(fd=fp.fileno())
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_register_threads(self):
         self.check_register(all_threads=True)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_register_chain(self):
         self.check_register(chain=True)
 
@@ -871,8 +842,7 @@ class FaultHandlerTests(unittest.TestCase):
             with self.check_stderr_none():
                 faulthandler.register(signal.SIGUSR1)
 
-    # TODO: RUSTPYTHON, AttributeError: module 'msvcrt' has no attribute 'GetErrorMode'
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON; AttributeError: module 'msvcrt' has no attribute 'GetErrorMode'
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
     def test_raise_exception(self):
         for exc, name in (

@@ -70,8 +70,7 @@ class CallbackTracbackTestCase(unittest.TestCase):
         with self.expect_unraisable(ZeroDivisionError):
             cb(0.0)
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_TypeErrorDivisionError(self):
         cb = CFUNCTYPE(c_int, c_char_p)(callback_func)
         err_msg = "unsupported operand type(s) for /: 'int' and 'bytes'"

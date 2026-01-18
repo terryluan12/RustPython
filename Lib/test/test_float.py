@@ -253,8 +253,7 @@ class GeneralFloatCases(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, 'keyword argument'):
             float(x='3.14')
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_keywords_in_subclass(self):
         class subclass(float):
             pass
@@ -401,8 +400,7 @@ class GeneralFloatCases(unittest.TestCase):
         self.assertEqualAndEqualSign(mod(1.0, -1.0), -0.0)
 
     @support.requires_IEEE_754
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_float_pow(self):
         # test builtin pow and ** operator for IEEE 754 special cases.
         # Special cases taken from section F.9.4.4 of the C99 specification
@@ -879,8 +877,7 @@ class RoundTestCase(unittest.TestCase, FloatsAreIdenticalMixin):
 
     @unittest.skipUnless(getattr(sys, 'float_repr_style', '') == 'short',
                          "applies only when using short float repr style")
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_previous_round_bugs(self):
         # particular cases that have occurred in bug reports
         self.assertEqual(round(562949953421312.5, 1),
@@ -899,8 +896,7 @@ class RoundTestCase(unittest.TestCase, FloatsAreIdenticalMixin):
 
     @unittest.skipUnless(getattr(sys, 'float_repr_style', '') == 'short',
                          "applies only when using short float repr style")
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_matches_float_format(self):
         # round should give the same results as float formatting
         for i in range(500):
@@ -1171,8 +1167,7 @@ class HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
                     self.identical(got, expected)
 
 
-    # TODO: RUSTPYTHON
-    @unittest.expectedFailure
+    @unittest.expectedFailure # TODO: RUSTPYTHON
     def test_from_hex(self):
         MIN = self.MIN
         MAX = self.MAX
